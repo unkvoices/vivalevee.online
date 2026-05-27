@@ -20,13 +20,14 @@ a { text-decoration: none; color: inherit; }
 
 /* --- Header Rewrite --- */
 .main-header {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 1000;
     background: var(--bg-color); /* Fundo escuro */
     padding: 15px 0;
+    transition: transform 0.3s ease-in-out;
 }
 
 .header-nav {
@@ -101,10 +102,25 @@ a { text-decoration: none; color: inherit; }
         font-weight: 600;
         font-size: 15px;
         color: var(--text-primary);
-        transition: opacity 0.3s;
+        position: relative;
+        padding: 5px 0;
     }
 
-    .nav-link:hover { opacity: 0.7; }
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent-yellow);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .nav-link:hover::after {
+        width: 100%;
+    }
 
     .header-actions { gap: 25px; }
 
@@ -127,10 +143,134 @@ a { text-decoration: none; color: inherit; }
 }
 
 body {
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
     line-height: 1.6;
+}
+
+/* Aplicar estilo Bold (700) aos títulos H1 e H2 */
+h1, h2 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    line-height: 1.2;
+}
+
+/* Poppins Utility Classes */
+.poppins-thin {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.poppins-extralight {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: normal;
+}
+
+.poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.poppins-bold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.poppins-extrabold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+.poppins-black {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  font-size: 2.5rem; /* Tamanho Mobile */
+}
+
+@media (min-width: 768px) {
+    .poppins-black {
+        font-size: 4.5rem; /* Tamanho Desktop */
+    }
+}
+
+.poppins-thin-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.poppins-extralight-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 200;
+  font-style: italic;
+}
+
+.poppins-light-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.poppins-regular-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.poppins-medium-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.poppins-semibold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.poppins-bold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.poppins-extrabold-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: italic;
+}
+
+.poppins-black-italic {
+  font-family: "Poppins", sans-serif;
+  font-weight: 900;
+  font-style: italic;
 }
 
 .hero-section {
@@ -208,9 +348,34 @@ body {
     font-weight: 700; margin-bottom: 15px;
 }
 
-.add-btn {
-    width: 100%; padding: 12px; border: none; border-radius: 6px;
-    background: var(--accent-blue); color: white; font-weight: 600; cursor: pointer;
+.fav-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--text-primary);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.fav-btn .heart-icon {
+    transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.fav-btn:hover {
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+}
+
+.fav-btn:hover .heart-icon {
+    fill: var(--accent-orange);
+    stroke: var(--accent-orange);
 }
 
 /* Media Queries */

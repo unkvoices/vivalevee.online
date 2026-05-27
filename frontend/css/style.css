@@ -185,8 +185,12 @@ body {
 .filters {
     display: flex; gap: 10px; overflow-x: auto;
     padding: 20px 0; margin-bottom: 30px;
-    
-    scrollbar-width: none;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.filters::-webkit-scrollbar {
+    display: none; /* Safari and Chrome */
 }
 
 .filter-btn {
