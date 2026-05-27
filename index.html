@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viva Leve | E-books de Desenvolvimento e Bem-Estar</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Phosphor Icons para ícones minimalistas -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    <header class="desktop-header">
+        <div class="header-container">
+            <!-- Bloco Esquerdo: Logo -->
+            <div class="header-left">
+                <div class="logo-wrapper">
+                    <img src="./frontend/assets/logo.png" alt="Viva Leve Logo" class="header-logo">
+                </div>
+            </div>
+
+            <!-- Bloco Central: Navegação -->
+            <nav class="header-center">
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-link active">Livros</a></li>
+                    <li><a href="#" class="nav-link">Alimentação & Hábitos</a></li>
+                    <li><a href="#" class="nav-link">Saúde & Bem-estar</a></li>
+                </ul>
+            </nav>
+
+            <!-- Bloco Direito: Ações e CTA -->
+            <div class="header-right">
+                <div class="icon-group">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <i class="ph ph-user"></i>
+                    <div class="cart-wrapper">
+                        <i class="ph ph-shopping-bag"></i>
+                        <span id="cart-count">0</span>
+                    </div>
+                </div>
+                <button class="btn-support">APOIAR</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção Hero para visualização do cabeçalho sobreposto -->
+        <section class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <h1>BEM-VINDO À VIVA LEVE <br>SAÚDE E BEM-ESTAR!</h1>
+                <p>Encontre a clareza necessária para transformar a sua rotina.</p>
+            </div>
+        </section>
+
+        <section class="filters container">
+            <button class="filter-btn active" data-category="all">Todos</button>
+            <button class="filter-btn" data-category="Filosofia">Filosofia</button>
+            <button class="filter-btn" data-category="Produtividade">Produtividade</button>
+            <button class="filter-btn" data-category="Saúde">Saúde</button>
+        </section>
+
+        <section class="products container">
+            <div id="books-grid" class="books-grid">
+                <!-- Injetado via JS -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2024 Viva Leve - Cientista da Própria Vida.</p>
+    </footer>
+
+    <script src="./frontend/js/app.js"></script>
+    <script src="./frontend/js/script.js"></script>
+</body>
+</html>

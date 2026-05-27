@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "slug": "a-arte-da-clareza-mental",
+    "titulo": "A Arte da Clareza Mental",
+    "autor": "F. A. Chico",
+    "categoria": "Filosofia",
+    "preco": 350.00,
+    "imagem": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    "id": 2,
+    "slug": "foco-implacavel",
+    "titulo": "Foco Implacável",
+    "autor": "Kas Cranky",
+    "categoria": "Produtividade",
+    "preco": 400.00,
+    "imagem": "https://images.unsplash.com/photo-1506784919141-939e9e8ef50b?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    "id": 3,
+    "slug": "saude-essencial",
+    "titulo": "Saúde Essencial",
+    "autor": "Dr. Aris",
+    "categoria": "Saúde",
+    "preco": 280.00,
+    "imagem": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400"
+  },
+  {
+    "id": 4,
+    "slug": "foco-implacavel",
+    "titulo": "Foco Implacável",
+    "autor": "Kas Cranky",
+    "categoria": "Produtividade",
+    "preco": 400.00,
+    "imagem": "https://images.unsplash.com/photo-1506784919141-939e9e8ef50b?auto=format&fit=crop&q=80&w=400"
+  }
+]
