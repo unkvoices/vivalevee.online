@@ -3,43 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viva Leve | E-books de Desenvolvimento e Bem-Estar</title>
+    <title>Viva Leve Saúde Bem-Estar</title>
+    <link rel="icon" type="image/png" href="frontend/assets/favicon.png">
     <link rel="stylesheet" href="style.css">
     <!-- Phosphor Icons para ícones minimalistas -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
-    <header class="desktop-header">
-        <div class="header-container">
-            <!-- Bloco Esquerdo: Logo -->
-            <div class="header-left">
-                <div class="logo-wrapper">
-                    <img src="./frontend/assets/logo.png" alt="Viva Leve Logo" class="header-logo">
-                </div>
-            </div>
+    <header class="main-header">
+        <nav class="header-nav">
+            <!-- 1. Botão Mobile -->
+            <button class="menu-toggle" aria-label="Abrir Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
 
-            <!-- Bloco Central: Navegação -->
-            <nav class="header-center">
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-link active">Livros</a></li>
-                    <li><a href="#" class="nav-link">Alimentação & Hábitos</a></li>
-                    <li><a href="#" class="nav-link">Saúde & Bem-estar</a></li>
-                </ul>
-            </nav>
+            <!-- 2. Logo -->
+            <a href="/" class="logo">
+                <img src="frontend/assets/favicon.png" alt="Viva Leve Logo">
+            </a>
 
-            <!-- Bloco Direito: Ações e CTA -->
-            <div class="header-right">
-                <div class="icon-group">
-                    <i class="ph ph-magnifying-glass"></i>
-                    <i class="ph ph-user"></i>
-                    <div class="cart-wrapper">
-                        <i class="ph ph-shopping-bag"></i>
-                        <span id="cart-count">0</span>
-                    </div>
+            <!-- 3. Links Desktop -->
+            <ul class="nav-links hide-mobile">
+                <li><a href="#" class="nav-link">Livros</a></li>
+                <li><a href="#" class="nav-link">Alimentação & Hábitos</a></li>
+                <li><a href="#" class="nav-link">Saúde & Bem-estar</a></li>
+            </ul>
+
+            <!-- 4. Ações (Direita) -->
+            <div class="header-actions">
+                <i class="ph ph-magnifying-glass action-icon"></i>
+                <i class="ph ph-user action-icon hide-mobile"></i>
+                <div class="cart-wrapper">
+                    <i class="ph ph-shopping-bag action-icon"></i>
+                    <span id="cart-count">0</span>
                 </div>
-                <button class="btn-support">APOIAR</button>
+                <button class="btn-support hide-mobile">APOIAR</button>
             </div>
-        </div>
+        </nav>
     </header>
 
     <main>

@@ -5,9 +5,15 @@
     --text-secondary: #a0a0a0;
     --accent-blue: #0070f3;
     --accent-orange: #ff8c00;
+    --accent-yellow: #f1c40f;
+    --logo-bg: #004d40;
     --container-width: 1200px;
     --spacing: 20px;
 }
+
+/* Helper Classes */
+.mobile-only { display: block; }
+.desktop-only { display: none !important; }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -24,50 +30,156 @@ body {
     padding: 0 var(--spacing);
 }
 
-/* Header */
+/* Mobile-First Header */
 .main-header {
-    height: 70px;
-    background: rgba(18, 18, 18, 0.95);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    position: sticky;
+    position: absolute;
     top: 0;
+    left: 0;
+    width: 100%;
     z-index: 100;
-    border-bottom: 1px solid #333;
-    display: flex;
-    align-items: center;
+    background: transparent;
+    padding: 15px 20px;
 }
 
-.main-header .container {
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
 }
 
-.logo { font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; }
-.logo span { color: var(--accent-blue); }
-
-.cart-icon {
-    background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;
-    position: relative;
+.header-left, .header-center, .header-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
 }
 
+.header-center { justify-content: center; }
+.header-right { justify-content: flex-end; gap: 15px; }
+
+/* Menu Burger */
+.mobile-menu-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* Logo */
+.logo-wrapper {
+    background-color: var(--logo-bg);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.header-logo {
+    width: 24px;
+    height: auto;
+}
+
+/* Icons & Cart */
+.icon-group {
+    display: flex;
+    gap: 15px;
+    font-size: 22px;
+    color: #fff;
+}
+
+.cart-wrapper { position: relative; display: flex; align-items: center; }
 #cart-count {
+    position: absolute;
+    top: -6px;
+    right: -8px;
     background: var(--accent-orange);
-    font-size: 0.7rem; padding: 2px 6px; border-radius: 10px;
-    position: absolute; top: -5px; right: -10px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 50%;
+    color: white;
 }
 
-/* Hero */
-.hero {
-    padding: 80px 0;
+/* --- Desktop Integration --- */
+@media (min-width: 768px) {
+    .mobile-only { display: none !important; }
+    .desktop-only { display: flex !important; }
+
+    .main-header { padding: 25px 5%; }
+
+    .header-left { flex: 0 0 auto; }
+    .header-center { flex: 1; justify-content: center; }
+    .header-right { flex: 0 0 auto; gap: 25px; }
+
+    .logo-wrapper { width: 50px; height: 50px; }
+    .header-logo { width: 30px; }
+
+    /* Nav List */
+    .nav-list {
+        display: flex;
+        gap: 30px;
+    }
+
+    .nav-link {
+        font-weight: 600;
+        font-size: 15px;
+        color: #fff;
+        position: relative;
+        padding-bottom: 5px;
+        transition: opacity 0.3s;
+    }
+
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        width: 0; height: 2px;
+        bottom: 0; left: 0;
+        background-color: #fff;
+        transition: width 0.3s;
+    }
+
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+    /* Support Button */
+    .btn-support {
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid var(--accent-yellow);
+        color: var(--accent-yellow);
+        padding: 8px 20px;
+        font-weight: 700;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .btn-support:hover {
+        background: var(--accent-yellow);
+        color: #000;
+    }
+}
+
+/* --- Original UI Styles (Keep as is) --- */
+/* Hero Section adjust */
+.hero-section {
+    position: relative;
+    height: 500px;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1600') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    background: linear-gradient(to bottom, #1a1a1a, var(--bg-color));
 }
 
-.hero h1 { font-size: 2.5rem; margin-bottom: 15px; line-height: 1.1; }
-.hero p { color: var(--text-secondary); font-size: 1.1rem; }
+.hero-content h1 { font-size: 2.2rem; margin-bottom: 15px; padding: 0 10px; }
+.hero-content p { color: var(--text-secondary); }
 
 /* Filters */
 .filters {
