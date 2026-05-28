@@ -9,14 +9,38 @@ const mobileFilter = document.getElementById("mobile-category-filter");
 // 1. Fetch & Initialize
 async function init() {
   try {
+    renderSkeletons(); // Mostra o loading antes do fetch
     const response = await fetch("./frontend/json/livros.json");
     allBooks = await response.json();
-    renderBooks(allBooks);
-    updateCartUI();
+
+    // Simulando um pequeno delay para que o skeleton seja visível (opcional)
+    setTimeout(() => {
+      renderBooks(allBooks);
+      updateCartUI();
+    }, 800);
   } catch (error) {
     console.error("Erro ao carregar livros:", error);
     booksGrid.innerHTML = `<p>Erro ao carregar o catálogo. Tente novamente mais tarde.</p>`;
   }
+}
+
+function renderSkeletons() {
+  const skeletons = Array(4)
+    .fill(0)
+    .map(
+      () => `
+    <div class="book-card skeleton-card">
+      <div class="skeleton skeleton-cover"></div>
+      <div class="book-info">
+        <div class="skeleton skeleton-title"></div>
+        <div class="skeleton skeleton-author"></div>
+        <div class="skeleton skeleton-btn"></div>
+      </div>
+    </div>
+  `,
+    )
+    .join("");
+  booksGrid.innerHTML = skeletons;
 }
 
 // 2. Renderizar Cartões
