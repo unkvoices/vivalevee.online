@@ -311,32 +311,94 @@ h2 {
   font-weight: 900;
   font-style: italic;
 }
-
 .hero-section {
-  position: relative;
-  height: 600px;
-  background: url("https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1600")
-    center/cover;
+  background-color: #1a1a1a;
+  padding: 160px 20px 100px; /* Padding superior compensa o header fixo */
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  color: var(--text-primary);
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+.hero-container {
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.hero-content {
-  position: relative;
-  z-index: 10;
+.hero-icon {
+  margin-bottom: 24px;
 }
 
-.hero-content h1 {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
+.hero-icon img {
+  width: 48px;
+  height: auto;
+  opacity: 0.9;
+}
+
+.hero-section h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.1;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+}
+
+.hero-section p {
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  max-width: 650px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-hero-primary,
+.btn-hero-secondary {
+  padding: 14px 28px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-hero-primary {
+  background-color: var(--accent-yellow);
+  color: #121212;
+  border: none;
+}
+
+.btn-hero-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 15px rgba(241, 196, 15, 0.3);
+}
+
+.btn-hero-secondary {
+  background-color: transparent;
+  color: var(--text-primary);
+  border: 1px solid #444;
+}
+
+.btn-hero-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #666;
+}
+
+@media (max-width: 480px) {
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100%;
+  }
 }
 
 /* --- Filtro/Dropdown Mobile --- */
