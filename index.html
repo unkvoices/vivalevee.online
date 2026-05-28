@@ -123,11 +123,93 @@
           <!-- Injetado via JS -->
         </div>
       </section>
+
+      <!-- Seção Newsletter -->
+      <section class="newsletter-section">
+        <div class="newsletter-container">
+          <h2 class="poppins-bold">Fique por dentro!</h2>
+          <p>Receba dicas de saúde e bem-estar diretamente no seu e-mail.</p>
+          <form class="newsletter-form" id="newsletter-form">
+            <div class="newsletter-input-group">
+              <input
+                type="email"
+                id="newsletter-email"
+                placeholder="Seu melhor e-mail"
+                required
+                class="newsletter-input"
+              />
+              <span class="newsletter-error" id="newsletter-error"
+                >Por favor, insira um e-mail válido.</span
+              >
+            </div>
+            <button type="submit" class="btn-cta">Subscrever</button>
+          </form>
+        </div>
+      </section>
     </main>
 
-    <footer class="main-footer">
-      <p>&copy; 2024 Viva Leve - Cientista da Própria Vida.</p>
+    <footer class="site-footer">
+      <nav class="footer-nav">
+        <ul class="footer-links">
+          <li><a href="#" class="footer-link">Casa</a></li>
+          <li><a href="#" class="footer-link">Características</a></li>
+          <li><a href="#" class="footer-link">Precificação</a></li>
+          <li><a href="#" class="footer-link">Perguntas frequentes</a></li>
+          <li><a href="#" class="footer-link">Sobre</a></li>
+          <li>
+            <a href="#" class="footer-link" id="open-privacy"
+              >Política de Privacidade</a
+            >
+          </li>
+        </ul>
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram"
+            ><i class="ph ph-instagram-logo"></i
+          ></a>
+          <a href="#" aria-label="Facebook"
+            ><i class="ph ph-facebook-logo"></i
+          ></a>
+          <a href="#" aria-label="YouTube"
+            ><i class="ph ph-youtube-logo"></i
+          ></a>
+        </div>
+      </nav>
+      <hr class="footer-divider" />
+      <p class="copyright">© 2026 Viva Leve Saúde e Bem-Estar</p>
     </footer>
+
+    <!-- Modal de Política de Privacidade -->
+    <div id="privacy-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2 class="poppins-bold">Política de Privacidade</h2>
+        <div class="modal-body">
+          <p>
+            A sua privacidade é importante para nós. É política do Viva Leve
+            respeitar a sua privacidade em relação a qualquer informação sua que
+            possamos coletar no site.
+          </p>
+          <p>
+            Retemos as informações coletadas apenas pelo tempo necessário para
+            fornecer o serviço solicitado. Quando armazenamos dados, os
+            protegemos dentro de meios comercialmente aceitáveis ​​para evitar
+            perdas e roubos.
+          </p>
+          <p>
+            Você é livre para recusar a nossa solicitação de informações
+            pessoais, entendendo que talvez não possamos fornecer alguns dos
+            serviços desejados.
+          </p>
+          <p>
+            O uso continuado de nosso site será considerado como aceitação de
+            nossas práticas em torno de privacidade e informações pessoais.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Canvas para o efeito de Confetti -->
+    <canvas id="confetti-canvas"></canvas>
 
     <script src="./frontend/js/app.js"></script>
     <script src="./frontend/js/script.js"></script>
