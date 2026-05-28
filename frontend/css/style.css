@@ -6,19 +6,16 @@
     --accent-blue: #0070f3;
     --accent-orange: #ff8c00;
     --accent-yellow: #f1c40f;
-    --logo-bg: #004d40;
+    --logo-bg: #004d4000;
     --container-width: 1200px;
     --spacing: 20px;
 }
-
-/* Helper Classes */
-.mobile-only { display: block; }
-.desktop-only { display: none !important; }
-
+ul { list-style: none; }
+a { text-decoration: none; color: inherit; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: 'Inter', -apple-system, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
     line-height: 1.6;
@@ -49,14 +46,22 @@ body {
     margin: 0 auto;
 }
 
-.header-left, .header-center, .header-right {
-    flex: 1;
+/* Ajuste para as classes reais do HTML */
+.header-nav {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    max-width: var(--container-width);
+    margin: 0 auto;
 }
 
-.header-center { justify-content: center; }
-.header-right { justify-content: flex-end; gap: 15px; }
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.action-icon { font-size: 22px; cursor: pointer; }
 
 /* Menu Burger */
 .mobile-menu-btn {
@@ -107,6 +112,13 @@ body {
     color: white;
 }
 
+/* Estilo para os filtros ativos no desktop */
+.category-link {
+    padding: 5px 10px;
+    transition: color 0.3s;
+}
+.category-link.active { color: var(--accent-orange); font-weight: bold; }
+
 /* --- Desktop Integration --- */
 @media (min-width: 768px) {
     .mobile-only { display: none !important; }
@@ -118,8 +130,8 @@ body {
     .header-center { flex: 1; justify-content: center; }
     .header-right { flex: 0 0 auto; gap: 25px; }
 
-    .logo-wrapper { width: 50px; height: 50px; }
-    .header-logo { width: 30px; }
+    .logo img { width: 50px; height: auto; }
+    .nav-links { display: flex; gap: 20px; }
 
     /* Nav List */
     .nav-list {
@@ -177,8 +189,8 @@ body {
     justify-content: center;
     text-align: center;
 }
-
-.hero-content h1 { font-size: 2.2rem; margin-bottom: 15px; padding: 0 10px; }
+/* Corrigido font-size do título */
+.hero-content h1 { font-size: 2.5rem ; margin-bottom: 15px; padding: 0 10px; }
 .hero-content p { color: var(--text-secondary); }
 
 /* Filters */
@@ -186,7 +198,12 @@ body {
     display: flex; gap: 10px; overflow-x: auto;
     padding: 20px 0; margin-bottom: 30px;
     -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+}
+
+@supports (scrollbar-width: none) {
+    .filters {
+        scrollbar-width: none; /* Firefox */
+    }
 }
 
 .filters::-webkit-scrollbar {
