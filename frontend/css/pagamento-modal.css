@@ -1,0 +1,201 @@
+/* 
+   Mapeamento de Cores para integração com o projeto Viva Leve:
+   Substitua os valores abaixo se as suas variáveis tiverem nomes diferentes.
+*/
+:root {
+  --bg-primary: #0a1016; /* var(--bg-color) */
+  --bg-card: #151b22; /* var(--surface) */
+  --bg-method: #0f0f0f; /* Um tom mais escuro para os cartões */
+  --text-main: #ffffff; /* var(--text-primary) */
+  --text-muted: #a0a0a0; /* var(--text-secondary) */
+  --neon-green: #d4ff3f; /* Cor de destaque solicitada */
+  --overlay-blur: rgba(0, 0, 0, 0.8);
+}
+
+/* Overlay com Desfoque */
+.payment-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay-blur);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: var(--spacing, 20px);
+}
+
+/* Card do Modal */
+.payment-card-container {
+  background-color: var(--bg-card);
+  width: 100%;
+  max-width: 440px;
+  border-radius: 16px;
+  padding: 40px;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+/* Botão Fechar */
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.03); /* Efeito vidro */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 255, 63, 0.2); /* Borda neon sutil */
+  border-radius: 12px; /* Cantos suaves */
+  color: var(--neon-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    /* Reflexo metálico superior */ 0 10px 20px rgba(0, 0, 0, 0.3); /* Sombra de profundidade */
+}
+
+.modal-close-btn:hover {
+  border-color: var(--neon-green);
+  background: rgba(212, 255, 63, 0.05);
+  transform: rotate(90deg) scale(1.1);
+  box-shadow:
+    0 0 20px rgba(212, 255, 63, 0.4),
+    inset 0 0 10px rgba(212, 255, 63, 0.2);
+}
+
+.modal-close-btn svg {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(
+    0 0 3px var(--neon-green)
+  ); /* Símbolo "embutido" e brilhante */
+}
+
+/* Cabeçalho */
+.payment-title {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.payment-subtitle {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 32px;
+}
+
+.highlight-price {
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+/* Grade de Pagamento 2x2 */
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* Cartões de Método */
+.method-card {
+  background-color: var(--bg-method);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efeito Hover e Foco Premium */
+.method-card:hover,
+.method-card.active {
+  border-color: var(--neon-green);
+  background-color: rgba(212, 255, 63, 0.02);
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(212, 255, 63, 0.15);
+}
+
+/* Ícones e Textos */
+.method-icon,
+.method-icon-svg {
+  font-size: 1.5rem;
+  width: 32px;
+  height: 32px;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.method-card:hover .method-icon,
+.method-card.active .method-icon,
+.method-card.active .method-icon-svg {
+  color: var(--neon-green);
+}
+
+.method-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.method-card.active .method-name {
+  color: var(--text-main);
+}
+
+/* Badge de "Check" Selecionado */
+.check-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--neon-green);
+  color: var(--bg-primary);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s ease;
+}
+
+.method-card.active .check-badge {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Footer do Modal */
+.step-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Ajustes Responsivos */
+@media (max-width: 400px) {
+  .payment-methods-grid {
+    grid-template-columns: 1fr;
+  }
+  .payment-card-container {
+    padding: 30px 20px;
+  }
+}

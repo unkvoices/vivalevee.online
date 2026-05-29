@@ -1,0 +1,134 @@
+<!-- Estrutura Modular do Modal de Pagamento -->
+<div class="payment-overlay" id="payment-modal">
+  <div class="payment-card-container">
+    <!-- Botão Fechar -->
+    <button class="modal-close-btn" aria-label="Fechar Modal">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+
+    <header class="payment-header">
+      <h2 class="payment-title">FORMA DE PAGAMENTO</h2>
+      <p class="payment-subtitle">
+        Valor a pagar: <span class="highlight-price">90.00 MT</span>
+      </p>
+    </header>
+
+    <div class="payment-methods-grid">
+      <!-- M-Pesa -->
+      <button class="method-card" data-method="mpesa">
+        <div class="check-badge">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <i class="method-icon mpesa-icon">M</i>
+        <span class="method-name">M-Pesa</span>
+      </button>
+
+      <!-- e-Mola (Exemplo Selecionado) -->
+      <button class="method-card active" data-method="emola">
+        <div class="check-badge">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <i class="method-icon emola-icon">e</i>
+        <span class="method-name">e-Mola</span>
+      </button>
+
+      <!-- PayPal -->
+      <button class="method-card" data-method="paypal">
+        <div class="check-badge">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <svg class="method-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M20.007 21.008c-1.043 0-1.896-.845-1.928-1.887L18 19.008V11.14c0-.503-.314-.959-.785-1.14l-6.222-2.393c-.47-.18-.999-.047-1.32.332L4.01 14.01a1.25 1.25 0 0 0-.158 1.408l3.18 5.589c.28.49.802.793 1.368.793h11.607a1.25 1.25 0 0 0 0-2.5h-8.874l-2.015-3.542 4.38-5.32 5.06 1.947v7.224c0 .69.56 1.25 1.25 1.25s1.25-.56 1.25-1.25V5.008a1.25 1.25 0 1 0-2.5 0v2.246l-.001-.001c-.131-.41-.51-.693-.949-.693-.438 0-.817.283-.948.692l-.001.001v.001c0 .001 0 .001 0 0z"
+          />
+        </svg>
+        <span class="method-name">PayPal</span>
+      </button>
+
+      <!-- Banco -->
+      <button class="method-card" data-method="bank">
+        <div class="check-badge">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <svg
+          class="method-icon-svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <rect x="3" y="10" width="18" height="9" rx="2"></rect>
+          <path d="M3 10l9-7 9 7"></path>
+          <line x1="12" y1="21" x2="12" y2="10"></line>
+        </svg>
+        <span class="method-name">Transferência</span>
+      </button>
+    </div>
+
+    <footer class="payment-footer">
+      <p class="step-desc">
+        Escolha um método para prosseguir com o pagamento seguro.
+      </p>
+    </footer>
+  </div>
+</div>
