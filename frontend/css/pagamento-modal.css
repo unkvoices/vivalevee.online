@@ -3,12 +3,12 @@
    Substitua os valores abaixo se as suas variáveis tiverem nomes diferentes.
 */
 :root {
-  --bg-primary: #0a1016; /* var(--bg-color) */
-  --bg-card: #151b22; /* var(--surface) */
+  --bg-primary: var(--bg-color, #0a1016);
+  --bg-card: var(--surface, #151b22);
   --bg-method: #0f0f0f; /* Um tom mais escuro para os cartões */
-  --text-main: #ffffff; /* var(--text-primary) */
-  --text-muted: #a0a0a0; /* var(--text-secondary) */
-  --neon-green: #d4ff3f; /* Cor de destaque solicitada */
+  --text-main: var(--text-primary, #ffffff);
+  --text-muted: var(--text-secondary, #a0a0a0);
+  --neon-green: #d4ff3f;
   --overlay-blur: rgba(0, 0, 0, 0.8);
 }
 

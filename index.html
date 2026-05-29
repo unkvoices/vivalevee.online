@@ -16,6 +16,33 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
   </head>
   <body>
+    <!-- Firebase Integration -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyD8E4ENQtP0xu_qZHe8G5TjqGPsrybkLOg",
+        authDomain: "vivaleve258.firebaseapp.com",
+        projectId: "vivaleve258",
+        storageBucket: "vivaleve258.firebasestorage.app",
+        messagingSenderId: "39491335561",
+        appId: "1:39491335561:web:43c0980cf3720ebaf49d58",
+        measurementId: "G-X7T8582S06",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      if (app) {
+        console.log("Firebase initialized successfully");
+      } else {
+        console.error("Failed to initialize Firebase");
+      }
+    </script>
+
     <header class="main-header">
       <!-- Bloco Esquerdo: Logo e Navegação -->
       <div class="header-left">
@@ -34,7 +61,12 @@
       <!-- Bloco Direito: Busca, Auth e Favoritos -->
       <div class="header-right">
         <div class="search-box">
-          <input type="search" id="search-input" placeholder="Procurar..." class="search-input" />
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Procurar..."
+            class="search-input"
+          />
           <button class="btn-search-trigger" id="search-btn">PESQUISAR</button>
         </div>
         <div class="header-btn-group">
@@ -211,7 +243,9 @@
     <aside id="favorites-drawer" class="favorites-drawer">
       <div class="drawer-header">
         <h2 class="poppins-bold">MEUS FAVORITOS</h2>
-        <button id="close-drawer" class="close-drawer" aria-label="Fechar menu">&times;</button>
+        <button id="close-drawer" class="close-drawer" aria-label="Fechar menu">
+          &times;
+        </button>
       </div>
       <div id="drawer-content" class="drawer-content"></div>
     </aside>
