@@ -1,8 +1,8 @@
 let allBooks = [];
-let cart = JSON.parse(localStorage.getItem("vivaLeveCart")) || [];
+let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
 
 const booksGrid = document.getElementById("books-grid");
-const cartCountDisplay = document.getElementById("cart-count");
+const favoritesCountDisplay = document.getElementById("favorites-count");
 const filterLinks = document.querySelectorAll(".category-link");
 const mobileFilter = document.getElementById("mobile-category-filter");
 
@@ -16,7 +16,7 @@ async function init() {
     // Simulando um pequeno delay para que o skeleton seja visível (opcional)
     setTimeout(() => {
       renderBooks(allBooks);
-      updateCartUI();
+      updateFavoritesUI();
     }, 800);
   } catch (error) {
     console.error("Erro ao carregar livros:", error);
@@ -46,41 +46,48 @@ function renderSkeletons() {
 // 2. Renderizar Cartões
 function renderBooks(books) {
   booksGrid.innerHTML = books
-    .map(
-      (book) => `
+    .map((book) => {
+      const isFav = favorites.some((fav) => fav.id === book.id);
+      return `
         <article class="book-card" data-category="${book.categoria}">
             <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy" onclick="window.location.href='#product-${book.id}'">
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
                 <span class="book-price">${book.preco.toFixed(2)} MT</span>
             </div>
+            <button class="btn-favorite ${isFav ? "active" : ""}" onclick="addToFavorites(event, ${book.id})" aria-label="Adicionar aos favoritos">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heart-icon">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button>
         </article>
-    `,
-    )
+    `;
+    })
     .join("");
 }
 
 // 3. Lógica do Carrinho
-window.addToCart = (event, id) => {
+window.addToFavorites = (event, id) => {
   const book = allBooks.find((b) => b.id === id);
-  if (book) {
-    cart.push(book);
-    localStorage.setItem("vivaLeveCart", JSON.stringify(cart));
-    updateCartUI();
+  if (!book) return;
 
-    // Feedback visual no botão
-    const btn = event.target;
-    btn.innerText = "Adicionado! ✓";
-    btn.style.background = "var(--accent-orange)";
-    setTimeout(() => {
-      btn.innerText = "Adicionar";
-      btn.style.background = "var(--accent-blue)";
-    }, 1500);
+  const index = favorites.findIndex((fav) => fav.id === id);
+  const btn = event.currentTarget;
+
+  if (index === -1) {
+    favorites.push(book);
+    btn.classList.add("active");
+  } else {
+    favorites.splice(index, 1);
+    btn.classList.remove("active");
   }
+
+  localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+  updateFavoritesUI();
 };
 
-function updateCartUI() {
-  cartCountDisplay.innerText = cart.length;
+function updateFavoritesUI() {
+  favoritesCountDisplay.innerText = favorites.length;
 }
 
 // 4. Filtros

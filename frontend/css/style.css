@@ -251,15 +251,15 @@ a {
   filter: brightness(1.1);
 }
 
-/* Ajuste do Cart no novo layout */
-.cart-wrapper {
+/* Ajuste dos Favoritos no novo layout */
+.favorites-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   margin-left: 5px;
 }
 
-#cart-count {
+#favorites-count {
   position: absolute;
   top: -6px;
   right: -8px;
@@ -617,6 +617,11 @@ h2 {
   border: none;
   transition: transform 0.3s ease;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-start;
+  position: relative;
 }
 
 .book-card:hover {
@@ -626,15 +631,17 @@ h2 {
 .book-cover {
   width: 100%;
   display: block;
-  aspect-ratio: 2 / 3;
-  object-fit: cover;
+  height: 280px;
+  object-fit: contain;
+  object-position: bottom;
   border-radius: 4px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
 .book-info {
   text-align: center;
-  margin-top: 15px;
+  margin-top: auto;
+  padding-top: 15px;
 }
 
 .book-title {
@@ -650,10 +657,46 @@ h2 {
   display: block;
 }
 
+.btn-favorite {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.heart-icon {
+  width: 22px;
+  height: 22px;
+  stroke: #888;
+  fill: none;
+  transition: all 0.2s ease;
+}
+
+.btn-favorite:hover {
+  transform: scale(1.1);
+}
+
+.btn-favorite:hover .heart-icon {
+  stroke: #fff;
+}
+
+.btn-favorite.active .heart-icon {
+  fill: #e74c3c;
+  stroke: #e74c3c;
+}
+
 /* Ajuste Skeleton para o novo layout */
 .skeleton-cover {
   width: 100%;
-  aspect-ratio: 2/3;
+  height: 280px;
   border-radius: 4px;
 }
 .skeleton-title {
