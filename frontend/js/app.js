@@ -53,7 +53,7 @@ function renderBooks(books) {
             <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy" onclick="window.location.href='#product-${book.id}'">
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
-                <span class="book-price">${book.preco.toFixed(2)} MT</span>
+                <span class="book-price">${book.preco === 0 ? "Grátis" : book.preco.toFixed(2) + " MT"}</span>
             </div>
             <button class="btn-favorite ${isFav ? "active" : ""}" onclick="addToFavorites(event, ${book.id})" aria-label="Adicionar aos favoritos">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heart-icon">
