@@ -105,6 +105,7 @@ window.addToFavorites = (event, id) => {
   if (index === -1) {
     favorites.push(book);
     btn.classList.add("active");
+    triggerCounterAnimation();
     openFavoritesDrawer();
   } else {
     favorites.splice(index, 1);
@@ -113,6 +114,14 @@ window.addToFavorites = (event, id) => {
 
   localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
   updateFavoritesUI();
+};
+
+window.clearAllFavorites = () => {
+  favorites = [];
+  localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+  updateFavoritesUI();
+  renderFavoritesDrawer();
+  renderBooks(allBooks);
 };
 
 /**
@@ -140,15 +149,22 @@ function renderFavoritesDrawer() {
     return;
   }
 
-  content.innerHTML = favorites
+  content.innerHTML = `
+    <div class="drawer-actions">
+      <button class="btn-clear-all" onclick="clearAllFavorites()">Limpar Tudo</button>
+    </div>
+  ` + favorites
     .map(
       (book) => `
     <div class="drawer-item">
-      <img src="${book.imagem}" alt="${book.titulo}">
-      <div class="drawer-item-info">
-        <span class="drawer-item-title">${book.titulo}</span>
-        <button class="btn-remove-fav" onclick="removeFromDrawer(${book.id})">Remover</button>
+      <div class="drawer-item-clickable" onclick="window.location.href='frontend/pages/product.html?id=${book.id}'">
+        <img src="${book.imagem}" alt="${book.titulo}">
+        <div class="drawer-item-info">
+          <span class="drawer-item-title">${book.titulo}</span>
+          <span class="drawer-item-author">${book.autor}</span>
+        </div>
       </div>
+      <button class="btn-remove-fav" onclick="removeFromDrawer(${book.id})">Remover</button>
     </div>
   `,
     )
@@ -172,6 +188,16 @@ document
 document
   .querySelector(".favorites-wrapper")
   ?.addEventListener("click", openFavoritesDrawer);
+
+/**
+ * Dispara a animação visual no contador
+ */
+function triggerCounterAnimation() {
+  if (!favoritesCountDisplay) return;
+  favoritesCountDisplay.classList.remove("pulse");
+  void favoritesCountDisplay.offsetWidth; // Force reflow
+  favoritesCountDisplay.classList.add("pulse");
+}
 
 /**
  * Atualiza o contador de favoritos no cabeçalho

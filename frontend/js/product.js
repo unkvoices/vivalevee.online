@@ -18,7 +18,17 @@ document.addEventListener("DOMContentLoaded", () => {
    */
   function updateFavoritesCount() {
     const countDisplay = document.getElementById("favorites-count");
-    if (countDisplay) countDisplay.innerText = favorites.length;
+    if (countDisplay) {
+      countDisplay.innerText = favorites.length;
+    }
+  }
+
+  function triggerCounterAnimation() {
+    const countDisplay = document.getElementById("favorites-count");
+    if (!countDisplay) return;
+    countDisplay.classList.remove("pulse");
+    void countDisplay.offsetWidth;
+    countDisplay.classList.add("pulse");
   }
 
   /**
@@ -29,7 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) {
       container = document.createElement("div");
       container.className = "download-progress-container";
-      container.innerHTML = '<div class="download-progress-bar" id="download-progress-bar"></div>';
+      container.innerHTML =
+        '<div class="download-progress-bar" id="download-progress-bar"></div>';
       document.body.appendChild(container);
     }
 
@@ -221,8 +232,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const originalDirectText = directBtn ? directBtn.innerText : "";
 
         // Altera para o estado de carregamento e desativa cliques
-        if (mainBtn) { mainBtn.innerText = "CARREGANDO..."; mainBtn.disabled = true; }
-        if (directBtn) { directBtn.innerText = "CARREGANDO..."; directBtn.disabled = true; }
+        if (mainBtn) {
+          mainBtn.innerText = "CARREGANDO...";
+          mainBtn.disabled = true;
+        }
+        if (directBtn) {
+          directBtn.innerText = "CARREGANDO...";
+          directBtn.disabled = true;
+        }
 
         // Incrementar Contador Local
         let counts = JSON.parse(localStorage.getItem("downloadCounts")) || {};
@@ -242,8 +259,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Restaura o estado original dos botões após 1.5s (fim da barra de progresso)
         setTimeout(() => {
-          if (mainBtn) { mainBtn.innerText = originalMainText; mainBtn.disabled = false; }
-          if (directBtn) { directBtn.innerText = originalDirectText; directBtn.disabled = false; }
+          if (mainBtn) {
+            mainBtn.innerText = originalMainText;
+            mainBtn.disabled = false;
+          }
+          if (directBtn) {
+            directBtn.innerText = originalDirectText;
+            directBtn.disabled = false;
+          }
         }, 1500);
       }
     };
@@ -256,13 +279,93 @@ document.addEventListener("DOMContentLoaded", () => {
       ?.addEventListener("click", handleDownload);
   }
 
-  // Adicione estas funções ao final do product.js (similares ao app.js) para o Drawer funcionar aqui também
+  /**
+   * Lógica do Drawer de Favoritos para a Página de Produto
+   */
   function openFavoritesDrawer() {
     renderFavoritesDrawer();
     document.getElementById("favorites-drawer").classList.add("open");
     document.getElementById("drawer-overlay").style.display = "block";
+    document.body.style.overflow = "hidden";
   }
-  // ... implementar renderFavoritesDrawer e listeners de fechar conforme app.js ...
+
+  function closeFavoritesDrawer() {
+    document.getElementById("favorites-drawer").classList.remove("open");
+    document.getElementById("drawer-overlay").style.display = "none";
+    document.body.style.overflow = "auto";
+  }
+
+  window.clearAllFavorites = () => {
+    favorites = [];
+    localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+    updateFavoritesCount();
+    renderFavoritesDrawer();
+
+    const favBtn = document.getElementById("fav-btn");
+    if (favBtn) {
+      favBtn.classList.remove("active");
+      favBtn.querySelector(".fav-text").innerText = "ADICIONAR AOS FAVORITOS";
+    }
+  };
+
+  function renderFavoritesDrawer() {
+    const content = document.getElementById("drawer-content");
+    if (!content) return;
+
+    if (favorites.length === 0) {
+      content.innerHTML = `<p class="empty-drawer-msg">Ainda não tens livros nos teus favoritos.</p>`;
+      return;
+    }
+
+    content.innerHTML =
+      `
+      <div class="drawer-actions">
+        <button class="btn-clear-all" onclick="clearAllFavorites()">Limpar Tudo</button>
+      </div>
+    ` +
+      favorites
+        .map(
+          (book) => `
+      <div class="drawer-item">
+        <div class="drawer-item-clickable" onclick="window.location.href='product.html?id=${book.id}'">
+          <img src="${book.imagem}" alt="${book.titulo}">
+          <div class="drawer-item-info">
+            <span class="drawer-item-title">${book.titulo}</span>
+            <span class="drawer-item-author">${book.autor}</span>
+          </div>
+        </div>
+        <button class="btn-remove-fav" onclick="removeFromDrawer(${book.id})">Remover</button>
+      </div>
+    `,
+        )
+        .join("");
+  }
+
+  window.removeFromDrawer = (id) => {
+    favorites = favorites.filter((fav) => fav.id !== id);
+    localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+    updateFavoritesCount();
+    renderFavoritesDrawer();
+
+    // Se o livro removido for o que estamos a visualizar, atualiza o botão da página
+    if (bookId === id) {
+      const favBtn = document.getElementById("fav-btn");
+      if (favBtn) {
+        favBtn.classList.remove("active");
+        favBtn.querySelector(".fav-text").innerText = "ADICIONAR AOS FAVORITOS";
+      }
+    }
+  };
+
+  document
+    .getElementById("close-drawer")
+    ?.addEventListener("click", closeFavoritesDrawer);
+  document
+    .getElementById("drawer-overlay")
+    ?.addEventListener("click", closeFavoritesDrawer);
+  document
+    .querySelector(".favorites-wrapper")
+    ?.addEventListener("click", openFavoritesDrawer);
 
   /**
    * Renderiza livros da mesma categoria (Relacionados)
@@ -400,17 +503,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (index === -1) {
       favorites.push(book);
       btn.classList.add("active");
-      btn.innerHTML = btn.innerHTML.replace(
-        "Adicionar aos Favoritos",
-        "Favoritado",
-      );
+      btn.querySelector(".fav-text").innerText = "FAVORITADO";
+      triggerCounterAnimation();
+      openFavoritesDrawer(); // Abre o menu automaticamente ao adicionar
     } else {
       favorites.splice(index, 1);
       btn.classList.remove("active");
-      btn.innerHTML = btn.innerHTML.replace(
-        "Favoritado",
-        "Adicionar aos Favoritos",
-      );
+      btn.querySelector(".fav-text").innerText = "ADICIONAR AOS FAVORITOS";
     }
 
     localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
