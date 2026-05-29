@@ -213,6 +213,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // Lógica de Download e Contador
     const handleDownload = () => {
       if (book.arquivoUrl) {
+        const mainBtn = document.getElementById("main-download-btn");
+        const directBtn = document.getElementById("direct-download-btn");
+
+        // Guarda os textos originais para restaurar depois
+        const originalMainText = mainBtn ? mainBtn.innerText : "";
+        const originalDirectText = directBtn ? directBtn.innerText : "";
+
+        // Altera para o estado de carregamento e desativa cliques
+        if (mainBtn) { mainBtn.innerText = "CARREGANDO..."; mainBtn.disabled = true; }
+        if (directBtn) { directBtn.innerText = "CARREGANDO..."; directBtn.disabled = true; }
+
         // Incrementar Contador Local
         let counts = JSON.parse(localStorage.getItem("downloadCounts")) || {};
         counts[book.id] = (counts[book.id] || 0) + 1;
@@ -228,6 +239,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        // Restaura o estado original dos botões após 1.5s (fim da barra de progresso)
+        setTimeout(() => {
+          if (mainBtn) { mainBtn.innerText = originalMainText; mainBtn.disabled = false; }
+          if (directBtn) { directBtn.innerText = originalDirectText; directBtn.disabled = false; }
+        }, 1500);
       }
     };
 
