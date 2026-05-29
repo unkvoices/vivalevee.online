@@ -4,16 +4,17 @@
     "slug": "a-arte-da-clareza-mental",
     "titulo": "A Arte da Clareza Mental",
     "autor": "F. A. Chico",
-    "categoria": "Filosofia",
+    "categoriaTag": "mental",
     "preco": 0,
-    "imagem": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400"
+    "imagem": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   },
-  {
+  { 
     "id": 2,
     "slug": "saude-essencial",
     "titulo": "Saúde Essencial",
     "autor": "Dr. Aris",
-    "categoria": "Saúde",
+    "categoriaTag": "alimentacao",
     "preco": 280.0,
     "imagem": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400"
   }

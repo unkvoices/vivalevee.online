@@ -1,6 +1,14 @@
 let allBooks = [];
 let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
 
+const categoryMap = {
+  alimentacao: "Alimentação Saudável",
+  conto: "Conto",
+  romance: "Romance",
+  mental: "Saúde Mental & Emocional",
+  fantasias: "Ficção & Fantasias",
+};
+
 const booksGrid = document.getElementById("books-grid");
 const favoritesCountDisplay = document.getElementById("favorites-count");
 const filterLinks = document.querySelectorAll(".category-link");
@@ -49,8 +57,8 @@ function renderBooks(books) {
     .map((book) => {
       const isFav = favorites.some((fav) => fav.id === book.id);
       return `
-        <article class="book-card" data-category="${book.categoria}">
-            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy" onclick="window.location.href='#product-${book.id}'">
+        <article class="book-card" data-category="${book.categoria}" onclick="window.location.href='product.html?id=${book.id}'">
+            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy">
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
                 <span class="book-price">${book.preco === 0 ? "Grátis" : book.preco.toFixed(2) + " MT"}</span>
@@ -68,6 +76,9 @@ function renderBooks(books) {
 
 // 3. Lógica do Carrinho
 window.addToFavorites = (event, id) => {
+  // Impede que o clique no botão de favorito dispare o clique do card (redirecionamento)
+  event.stopPropagation();
+
   const book = allBooks.find((b) => b.id === id);
   if (!book) return;
 
@@ -91,13 +102,12 @@ function updateFavoritesUI() {
 }
 
 // 4. Filtros
-function applyFilter(category) {
+function applyFilter(tag) {
   const filtered =
-    category === "all"
+    tag === "all"
       ? allBooks
-      : allBooks.filter(
-          (b) => b.category === category || b.categoria === category,
-        );
+      : allBooks.filter((book) => book.categoriaTag === tag);
+
   renderBooks(filtered);
 }
 
@@ -108,8 +118,8 @@ filterLinks.forEach((btn) => {
     filterLinks.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
 
-    const category = btn.dataset.category;
-    applyFilter(category);
+    const tag = btn.dataset.tag;
+    applyFilter(tag);
   });
 });
 

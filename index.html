@@ -68,13 +68,11 @@
           aria-label="Filtrar por categoria"
         >
           <option value="all">Todos os Livros</option>
-          <option value="Alimentação Saudável">Alimentação Saudável</option>
-          <option value="Conto">Conto</option>
-          <option value="Ficção & Fantasias">Ficção & Fantasias</option>
-          <option value="Romance">Romance</option>
-          <option value="Saúde Mental & Emocional">
-            Saúde Mental & Emocional
-          </option>
+          <option value="alimentacao">Alimentação Saudável</option>
+          <option value="conto">Conto</option>
+          <option value="fantasias">Ficção & Fantasias</option>
+          <option value="romance">Romance</option>
+          <option value="mental">Saúde Mental & Emocional</option>
         </select>
         <i class="ph ph-caret-down select-icon"></i>
       </div>
@@ -82,36 +80,28 @@
       <nav class="categories-nav container">
         <ul class="categories-list">
           <li>
-            <a href="#" class="category-link active" data-category="all"
+            <a href="#" class="category-link active" data-tag="all"
               >Todos os Livros</a
             >
           </li>
           <li>
-            <a
-              href="#"
-              class="category-link"
-              data-category="Alimentação Saudável"
+            <a href="#" class="category-link" data-tag="alimentacao"
               >Alimentação Saudável</a
             >
           </li>
           <li>
-            <a href="#" class="category-link" data-category="Conto">Conto</a>
+            <a href="#" class="category-link" data-tag="conto">Conto</a>
           </li>
           <li>
-            <a href="#" class="category-link" data-category="Ficção & Fantasias"
+            <a href="#" class="category-link" data-tag="fantasias"
               >Ficção & Fantasias</a
             >
           </li>
           <li>
-            <a href="#" class="category-link" data-category="Romance"
-              >Romance</a
-            >
+            <a href="#" class="category-link" data-tag="romance">Romance</a>
           </li>
           <li>
-            <a
-              href="#"
-              class="category-link"
-              data-category="Saúde Mental & Emocional"
+            <a href="#" class="category-link" data-tag="mental"
               >Saúde Mental & Emocional</a
             >
           </li>
@@ -119,42 +109,7 @@
       </nav>
 
       <section class="books-showcase container">
-        <div id="books-grid" class="books-grid">
-          <!-- Exemplo de estrutura para 3 cards (serão substituídos pelo JS) -->
-          <article class="book-card">
-            <img
-              src="https://via.placeholder.com/400x600/1e1e1e/ffffff?text=Capa+Livro+1"
-              alt="Livro 1"
-              class="book-cover"
-            />
-            <div class="book-info">
-              <h3 class="book-title">20 Dicas para viver melhor</h3>
-              <span class="book-price">US$1,99</span>
-            </div>
-          </article>
-          <article class="book-card">
-            <img
-              src="https://via.placeholder.com/400x600/1e1e1e/ffffff?text=Capa+Livro+2"
-              alt="Livro 2"
-              class="book-cover"
-            />
-            <div class="book-info">
-              <h3 class="book-title">O Poder do Hábito</h3>
-              <span class="book-price">US$2,99</span>
-            </div>
-          </article>
-          <article class="book-card">
-            <img
-              src="https://via.placeholder.com/400x600/1e1e1e/ffffff?text=Capa+Livro+3"
-              alt="Livro 3"
-              class="book-cover"
-            />
-            <div class="book-info">
-              <h3 class="book-title">Saúde Mental e Emocional</h3>
-              <span class="book-price">US$0,99</span>
-            </div>
-          </article>
-        </div>
+        <div id="books-grid" class="books-grid"></div>
       </section>
 
       <!-- Seção Newsletter -->
@@ -245,6 +200,5 @@
     <canvas id="confetti-canvas"></canvas>
 
     <script src="./frontend/js/app.js"></script>
-    <script src="./frontend/js/script.js"></script>
   </body>
 </html>

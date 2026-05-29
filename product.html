@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalhes do Livro - Viva Leve</title>
+
+    <!-- Meta Tags Base para Redes Sociais (Open Graph) -->
+    <meta property="og:type" content="book" />
+    <meta property="og:url" content="" id="og-url" />
+    <meta
+      property="og:title"
+      content="Viva Leve - Saúde e Bem-Estar"
+      id="og-title"
+    />
+    <meta
+      property="og:description"
+      content="Encontre a clareza necessária para transformar a sua rotina."
+      id="og-description"
+    />
+    <meta
+      property="og:image"
+      content="frontend/assets/favicon.png"
+      id="og-image"
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="stylesheet" href="frontend/css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  </head>
+  <body>
+    <header class="main-header">
+      <div class="header-left">
+        <a href="index.html" class="logo">
+          <img src="frontend/assets/favicon.png" alt="Viva Leve Logo" />
+        </a>
+      </div>
+      <div class="header-right">
+        <div class="favorites-wrapper">
+          <i class="ph ph-heart action-icon"></i>
+          <span id="favorites-count">0</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" style="margin-top: 120px">
+      <div id="product-details-container">
+        <!-- O JavaScript product.js injetará o conteúdo aqui -->
+        <p style="text-align: center">A carregar detalhes do livro...</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p class="copyright">© 2026 Viva Leve Saúde e Bem-Estar</p>
+    </footer>
+
+    <script src="frontend/js/product.js"></script>
+  </body>
+</html>
