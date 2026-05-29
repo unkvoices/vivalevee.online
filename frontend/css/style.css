@@ -1239,3 +1239,22 @@ h2 {
   opacity: 0; /* Estado inicial antes da animação */
   animation: fadeInUp 0.5s ease-out forwards;
 }
+
+/* --- Download Progress Bar --- */
+.download-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.download-progress-bar {
+  width: 0%;
+  height: 100%;
+  background-color: var(--accent-yellow);
+  box-shadow: 0 2px 10px rgba(241, 196, 15, 0.4);
+  transition: width 0.4s cubic-bezier(0.1, 0.7, 1, 0.1), opacity 0.3s ease;
+}

@@ -22,6 +22,34 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
+   * Executa a animação visual da barra de progresso no topo
+   */
+  function animateDownloadProgressBar() {
+    let container = document.querySelector(".download-progress-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.className = "download-progress-container";
+      container.innerHTML = '<div class="download-progress-bar" id="download-progress-bar"></div>';
+      document.body.appendChild(container);
+    }
+
+    const bar = document.getElementById("download-progress-bar");
+    bar.style.opacity = "1";
+    bar.style.width = "0%";
+
+    // Sequência de animação simulada para feedback visual imediato
+    setTimeout(() => (bar.style.width = "40%"), 100);
+    setTimeout(() => (bar.style.width = "75%"), 500);
+    setTimeout(() => (bar.style.width = "100%"), 1000);
+
+    // Finalizar e esconder após a conclusão
+    setTimeout(() => {
+      bar.style.opacity = "0";
+      setTimeout(() => (bar.style.width = "0%"), 300);
+    }, 1500);
+  }
+
+  /**
    * Renderiza o estado de carregamento (Skeleton)
    */
   function renderProductSkeleton() {
@@ -190,6 +218,8 @@ document.addEventListener("DOMContentLoaded", () => {
         counts[book.id] = (counts[book.id] || 0) + 1;
         localStorage.setItem("downloadCounts", JSON.stringify(counts));
         document.getElementById("count-display").innerText = counts[book.id];
+
+        animateDownloadProgressBar();
 
         // Trigger Download
         const link = document.createElement("a");
