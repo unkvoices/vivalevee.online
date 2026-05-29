@@ -62,7 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Simulação de delay para visualização do skeleton
-      setTimeout(() => renderProduct(book), 600);
+      setTimeout(() => {
+        renderProduct(book);
+        renderRelatedBooks(book, books);
+      }, 600);
     } catch (error) {
       console.error("Erro ao carregar detalhes:", error);
       renderError("Ocorreu um erro ao carregar os detalhes do produto.");
@@ -92,7 +95,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const isFav = favorites.some((fav) => fav.id === book.id);
     const formattedPrice =
-      book.preco === 0 ? "Grátis" : `${book.preco.toFixed(2)} MT`;
+      book.preco === 0 ? "DOWNLOAD GRATUITO" : `${book.preco.toFixed(2)} MT`;
+    
+    const mainCtaText = book.preco === 0 ? "DOWNLOAD GRÁTIS" : "FAZER DOWNLOAD";
+    
+    const categoriaNome = book.categoria || "Catálogo";
 
     container.innerHTML = `
       <div class="product-page-wrapper">
@@ -105,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <i class="ph ph-arrow-left"></i> Voltar ao Catálogo
           </a>
           <nav class="breadcrumb">
-            <a href="index.html">Início</a> / <span>${book.categoria}</span>
+            <a href="index.html">Início</a> / <span>${categoriaNome}</span>
           </nav>
           
           <h1 class="product-title poppins-bold">${book.titulo}</h1>
@@ -117,12 +124,12 @@ document.addEventListener("DOMContentLoaded", () => {
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="heart-icon">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
-              ${isFav ? "Favoritado" : "Adicionar aos Favoritos"}
+              <span class="fav-text">${isFav ? "FAVORITADO" : "ADICIONAR AOS FAVORITOS"}</span>
             </button>
           </div>
 
           <div class="product-actions">
-            <button class="btn-buy-now">Adicionar à Coleção</button>
+            <button class="btn-buy-now">${mainCtaText}</button>
             <button class="btn-share" id="share-btn">
               <i class="ph ph-share-network"></i> Partilhar
             </button>
@@ -148,8 +155,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
+   * Renderiza livros da mesma categoria (Relacionados)
+   */
+  function renderRelatedBooks(currentBook, allBooks) {
+    const relatedGrid = document.getElementById("related-books-grid");
+    if (!relatedGrid) return;
+
+    const related = allBooks
+      .filter(b => b.categoriaTag === currentBook.categoriaTag && b.id !== currentBook.id)
+      .slice(0, 4);
+
+    if (related.length === 0) {
+      document.querySelector(".related-books-section").style.display = "none";
+      return;
+    }
+
+    relatedGrid.innerHTML = related.map((book, index) => {
+      return `
+        <article class="book-card fade-in-node" style="animation-delay: ${index * 0.1}s" onclick="window.location.href='product.html?id=${book.id}'">
+            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy">
+            <div class="book-info">
+                <h3 class="book-title">${book.titulo}</h3>
+                <span class="book-price">${book.preco === 0 ? "GRÁTIS" : book.preco.toFixed(2) + " MT"}</span>
+            </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  /**
    * Injeta dados estruturados (JSON-LD) para otimização de Rich Snippets no Google
-   * @param {Object} book 
+   * @param {Object} book
    */
   function injectJSONLD(book) {
     // Remove script anterior se existir (evita duplicados em SPAs ou navegação interna)
@@ -189,7 +225,7 @@ document.addEventListener("DOMContentLoaded", () => {
         {
           "@type": "ListItem",
           position: 2,
-          name: book.categoria,
+          name: book.categoria || "Catálogo",
           item: `${siteRoot}index.html?tag=${book.categoriaTag}`,
         },
         {
@@ -211,7 +247,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Gerencia a partilha nativa (Web Share API) ou copia o link no Desktop
-   * @param {Object} book 
+   * @param {Object} book
    */
   async function handleShare(book) {
     const shareData = {
@@ -238,8 +274,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Alterna o estado de favorito de um livro e persiste no LocalStorage
-   * @param {Event} event 
-   * @param {Object} book 
+   * @param {Event} event
+   * @param {Object} book
    */
   function toggleFavorite(event, book) {
     const btn = event.currentTarget;
@@ -267,7 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /**
    * Renderiza uma mensagem de erro caso o produto não seja encontrado
-   * @param {string} msg 
+   * @param {string} msg
    */
   function renderError(msg) {
     container.innerHTML = `<div class="error-state"><p>${msg}</p><a href="index.html">Voltar ao catálogo</a></div>`;

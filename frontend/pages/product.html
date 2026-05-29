@@ -51,10 +51,12 @@
         </nav>
       </div>
       <div class="header-right">
-        <input type="search" placeholder="Procurar..." class="search-input" />
+        <div class="search-box">
+          <input type="search" id="search-input" placeholder="Procurar..." class="search-input" />
+          <button class="btn-search-trigger" id="search-btn">PESQUISAR</button>
+        </div>
         <div class="header-btn-group">
-          <button class="btn-login">Logar</button>
-          <button class="btn-cta">Inscrever-se</button>
+          <button class="btn-member">SEJA MEMBRO</button>
         </div>
         <div class="favorites-wrapper">
           <i class="ph ph-heart action-icon"></i>
@@ -68,6 +70,12 @@
         <!-- O JavaScript product.js injetará o conteúdo aqui -->
         <p style="text-align: center">A carregar detalhes do livro...</p>
       </div>
+
+      <!-- Seção de Livros Relacionados -->
+      <section class="related-books-section">
+        <h2 class="poppins-bold section-title">Poderá também gostar</h2>
+        <div id="related-books-grid" class="books-grid"></div>
+      </section>
     </main>
 
     <footer class="site-footer">

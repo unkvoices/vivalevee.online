@@ -16,6 +16,8 @@ const booksGrid = document.getElementById("books-grid");
 const favoritesCountDisplay = document.getElementById("favorites-count");
 const filterLinks = document.querySelectorAll(".category-link");
 const mobileFilter = document.getElementById("mobile-category-filter");
+const searchInput = document.getElementById("search-input");
+const searchBtn = document.getElementById("search-btn");
 
 /**
  * Inicializa a aplicação, carregando os dados do JSON e tratando skeletons
@@ -61,14 +63,14 @@ function renderSkeletons() {
 
 /**
  * Renderiza a grade de livros dinamicamente
- * @param {Array} books 
+ * @param {Array} books
  */
 function renderBooks(books) {
   booksGrid.innerHTML = books
-    .map((book) => {
+    .map((book, index) => {
       const isFav = favorites.some((fav) => fav.id === book.id);
       return `
-        <article class="book-card" data-category="${book.categoria}" onclick="window.location.href='frontend/pages/product.html?id=${book.id}'">
+        <article class="book-card fade-in-node" style="animation-delay: ${index * 0.05}s" data-category="${book.categoria}" onclick="window.location.href='frontend/pages/product.html?id=${book.id}'">
             <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy">
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
@@ -87,8 +89,8 @@ function renderBooks(books) {
 
 /**
  * Adiciona ou remove um livro dos favoritos via clique no ícone de coração
- * @param {Event} event 
- * @param {number} id 
+ * @param {Event} event
+ * @param {number} id
  */
 window.addToFavorites = (event, id) => {
   // Impede que o clique no botão de favorito dispare o clique do card (redirecionamento)
@@ -120,8 +122,35 @@ function updateFavoritesUI() {
 }
 
 /**
+ * Executa a lógica de filtragem por texto
+ */
+function handleSearch() {
+  const query = searchInput.value.toLowerCase().trim();
+
+  if (query === "") {
+    renderBooks(allBooks);
+    return;
+  }
+
+  const filtered = allBooks.filter(
+    (book) =>
+      book.titulo.toLowerCase().includes(query) ||
+      book.autor.toLowerCase().includes(query) ||
+      book.categoria.toLowerCase().includes(query),
+  );
+
+  renderBooks(filtered);
+}
+
+// Listeners para Pesquisa
+searchBtn?.addEventListener("click", handleSearch);
+searchInput?.addEventListener("keyup", (e) => {
+  if (e.key === "Enter") handleSearch();
+});
+
+/**
  * Filtra os livros baseando-se na tagId
- * @param {string} tag 
+ * @param {string} tag
  */
 function applyFilter(tag) {
   const filtered =
