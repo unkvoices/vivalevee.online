@@ -1,0 +1,16 @@
+# Dependências do Node.js
+node_modules/
+
+# Arquivos de ambiente (Segredos e Configurações de Banco)
+.env
+.env.test
+.env.production
+
+# Logs de erro e execução
+logs
+*.log
+npm-debug.log*
+
+# Cache e arquivos de sistema
+.DS_Store
+dist/

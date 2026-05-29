@@ -1,6 +1,6 @@
 /* --- Variáveis Globais e Configurações de Tema --- */
 :root {
-  --bg-color: #0A1016;
+  --bg-color: #0a1016;
   --surface: #151b22;
   --text-primary: #ffffff;
   --text-secondary: #a0a0a0;
@@ -164,30 +164,54 @@ a {
   filter: brightness(1.1);
 }
 
-/* Ajuste dos Favoritos no novo layout */
-.favorites-wrapper {
+/* --- Componente de Favoritos Minimalista --- */
+.wishlist-counter-container {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  margin-left: 5px;
-}
-
-#favorites-count {
-  position: absolute;
-  top: -6px;
-  right: -8px;
-  background: var(--accent-orange);
-  font-size: 10px;
-  font-weight: bold;
-  padding: 2px 5px;
-  border-radius: 50%;
-  color: white;
-}
-
-.action-icon {
-  font-size: 22px;
+  justify-content: center;
+  gap: 8px; /* Espaço entre ícone e número */
   cursor: pointer;
-  color: #fff;
+  padding: 6px 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-left: 10px;
+}
+
+.wishlist-counter-container:hover {
+  transform: scale(1.05);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+}
+
+.icon-heart {
+  width: 22px;
+  height: 22px;
+  color: #ffffff;
+  fill: transparent;
+  transition: all 0.3s ease;
+}
+
+/* Estado ativo quando houver livros guardados (> 0) */
+.wishlist-counter-container.has-items .icon-heart {
+  color: var(--accent-orange);
+  fill: transparent; /* Remove o fundo, mantendo apenas o contorno */
+  filter: drop-shadow(0 0 4px rgba(255, 140, 0, 0.4));
+}
+
+.wishlist-count {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+/* Otimização para Telas Muito Pequenas (Mobile) */
+@media (max-width: 480px) {
+  .wishlist-count {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -237,6 +261,32 @@ body {
   background-color: var(--bg-color);
   color: var(--text-primary);
   line-height: 1.6;
+  transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* --- Cores por Categoria --- */
+body.category-romance {
+  background-color: #1a0f1a;
+}
+
+body.category-alimentacao {
+  background-color: #0f1a0a;
+}
+
+body.category-mental {
+  background-color: #0a0f1a;
+}
+
+body.category-fantasias {
+  background-color: #1a0a0f;
+}
+
+body.category-conto {
+  background-color: #0f1a16;
+}
+
+body.category-all {
+  background-color: #0a1016;
 }
 
 .container {
@@ -521,8 +571,11 @@ h2 {
 
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 40px 20px;
+  /* Aumentado para 260px para cards maiores e mais legíveis */
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px; /* Gap levemente aumentado para acompanhar o tamanho dos cards */
+  max-width: 1130px; /* Cálculo: (4 * 260px) + (3 * 28px gap) + margem de respiro */
+  margin: 0 auto; /* Centraliza o grid em ecrãs ultra-wide */
   padding-bottom: 50px;
 }
 
@@ -530,7 +583,7 @@ h2 {
 @media (max-width: 480px) {
   .books-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 25px 12px; /* Reduz o espaçamento entre os cards */
+    gap: 16px; /* Gap consistente no mobile */
     padding-bottom: 30px;
   }
   .book-cover {
@@ -543,7 +596,7 @@ h2 {
     font-size: 0.85rem; /* Texto ligeiramente menor */
   }
   .btn-favorite {
-    bottom: 8px;
+    top: 135px; /* Alinhado ao canto inferior da imagem (170px) no mobile */
     right: 8px;
   }
 }
@@ -558,6 +611,8 @@ h2 {
   height: 100%;
   justify-content: flex-start;
   position: relative;
+  max-width: 280px; /* Permite que o card cresça um pouco mais que o minmax antes de quebrar */
+  margin: 0 auto; /* Centraliza o card na sua célula da grid */
 }
 
 .book-card:hover {
@@ -567,25 +622,33 @@ h2 {
 .book-cover {
   width: 100%;
   display: block;
-  height: 240px;
-  object-fit: contain;
+  height: 350px; /* Aumentado para dar destaque à arte da capa */
+  object-fit: contain; /* Garante que a capa não seja cortada nem distorcida */
   object-position: bottom;
   border-radius: 4px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   opacity: 0;
-  transition: opacity 0.6s ease-in-out, transform 0.3s ease;
+  transition:
+    opacity 0.6s ease-in-out,
+    transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+}
+
+/* Efeito de Zoom Suave na Imagem */
+.book-card:hover .book-cover {
+  transform: scale(1.05);
 }
 
 .book-info {
   text-align: center;
   margin-top: auto;
-  padding-top: 15px;
+  padding: 12px 4px 0; /* Padding interno ajustado */
 }
 
 .book-title {
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem; /* Fonte ligeiramente reduzida para equilíbrio */
   margin: 0 auto 5px auto;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* Limita a 2 linhas para manter o alinhamento */
@@ -596,7 +659,7 @@ h2 {
 
 .book-price {
   color: #888;
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Preço discretamente menor */
   display: block;
 }
 
@@ -614,7 +677,9 @@ h2 {
   border-radius: 12px;
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
   opacity: 0;
-  transition: opacity 0.8s ease-in-out, transform 0.5s ease;
+  transition:
+    opacity 0.8s ease-in-out,
+    transform 0.5s ease;
 }
 
 .product-main-image:hover {
@@ -690,6 +755,22 @@ h2 {
 .btn-favorite-large.active .heart-icon {
   fill: #e74c3c;
   stroke: #e74c3c;
+  filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.8));
+  animation: heart-neon-glow 2s ease-in-out infinite;
+}
+
+@keyframes heart-neon-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.6))
+      drop-shadow(0 0 10px rgba(231, 76, 60, 0.4));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 10px rgba(231, 76, 60, 0.9))
+      drop-shadow(0 0 20px rgba(231, 76, 60, 0.6));
+    transform: scale(1.1);
+  }
 }
 
 .btn-favorite-large:hover {
@@ -856,8 +937,8 @@ h2 {
 
 .btn-favorite {
   position: absolute;
-  bottom: 15px;
-  right: 15px;
+  top: 310px; /* Ajustado para a nova altura da imagem (350px - margem) */
+  right: 12px;
   background: transparent;
   border: none;
   padding: 0;
@@ -888,6 +969,8 @@ h2 {
 .btn-favorite.active .heart-icon {
   fill: #e74c3c;
   stroke: #e74c3c;
+  filter: drop-shadow(0 0 5px rgba(231, 76, 60, 0.8));
+  animation: heart-neon-glow 2s ease-in-out infinite;
 }
 
 /* Estado de imagem carregada */
@@ -898,7 +981,7 @@ h2 {
 /* Ajuste Skeleton para o novo layout */
 .skeleton-cover {
   width: 100%;
-  height: 240px;
+  height: 350px; /* Sincronizado com a nova altura das capas */
   border-radius: 4px;
 }
 @media (max-width: 480px) {
@@ -1309,9 +1392,15 @@ h2 {
 
 /* Animação de Escala para o Contador */
 @keyframes pulseScale {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.4); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .pulse {
@@ -1368,38 +1457,54 @@ h2 {
   display: none;
   position: fixed;
   z-index: 5000;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.85);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.85);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  align-items: center; justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .payment-card {
   background: #0f0f0f;
-  border: 1px solid rgba(255,255,255,0.1);
-  width: 90%; max-width: 420px;
-  padding: 40px; border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 90%;
+  max-width: 420px;
+  padding: 40px;
+  border-radius: 12px;
   text-align: center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
 }
 
 .payment-card h2 {
-  font-size: 1.2rem; letter-spacing: 2px;
-  margin-bottom: 30px; color: #fff;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  color: #fff;
 }
 
 .btn-modal-back {
   position: absolute;
-  top: 45px; left: 30px;
-  background: transparent; border: none;
+  top: 45px;
+  left: 30px;
+  background: transparent;
+  border: none;
   color: var(--text-secondary);
-  font-size: 0.7rem; font-weight: 700;
-  cursor: pointer; display: flex; align-items: center; gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
   transition: color 0.3s;
 }
 
-.btn-modal-back:hover { color: #d4ff3f; }
+.btn-modal-back:hover {
+  color: #d4ff3f;
+}
 
 .payment-methods-grid {
   display: grid;
@@ -1410,16 +1515,27 @@ h2 {
 
 .method-card {
   background: #1a1a1a;
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   padding: 25px 15px;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-.method-card i { font-size: 1.8rem; color: var(--text-secondary); transition: 0.3s; }
-.method-card span { font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); }
+.method-card i {
+  font-size: 1.8rem;
+  color: var(--text-secondary);
+  transition: 0.3s;
+}
+.method-card span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
 
 .method-card:hover {
   border-color: #d4ff3f;
@@ -1427,7 +1543,10 @@ h2 {
   transform: translateY(-3px);
 }
 
-.method-card:hover i, .method-card:hover span { color: #d4ff3f; }
+.method-card:hover i,
+.method-card:hover span {
+  color: #d4ff3f;
+}
 
 .step-desc {
   color: var(--text-secondary);
@@ -1453,26 +1572,40 @@ h2 {
 }
 
 .checkout-input {
-  width: 100%; background: #1a1a1a;
-  border: 1px solid #333; padding: 15px;
-  color: #fff; border-radius: 6px;
-  margin-bottom: 20px; font-size: 1rem;
-  outline: none; text-align: center;
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 15px;
+  color: #fff;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  outline: none;
+  text-align: center;
 }
 
 .btn-pay-confirm {
-  width: 100%; background: #d4ff3f; /* Neon/Limão */
-  color: #000; border: none;
-  padding: 16px; border-radius: 6px;
-  font-weight: 800; text-transform: uppercase;
-  cursor: pointer; transition: 0.3s;
+  width: 100%;
+  background: #d4ff3f; /* Neon/Limão */
+  color: #000;
+  border: none;
+  padding: 16px;
+  border-radius: 6px;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.btn-pay-confirm:hover { transform: scale(1.02); filter: brightness(1.1); }
+.btn-pay-confirm:hover {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
 
 /* Polling States */
 .spinner-minimal {
-  width: 40px; height: 40px;
+  width: 40px;
+  height: 40px;
   border: 3px solid rgba(212, 255, 63, 0.1);
   border-top: 3px solid #d4ff3f;
   border-radius: 50%;
@@ -1480,20 +1613,33 @@ h2 {
   animation: spin 1s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 .pulsing-text {
-  color: #d4ff3f; font-size: 0.85rem;
-  font-weight: 600; letter-spacing: 1px;
+  color: #d4ff3f;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1px;
   animation: pulse 1.5s infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .price-display {
-  display: block; margin-bottom: 10px;
-  color: var(--text-secondary); font-size: 0.9rem;
+  display: block;
+  margin-bottom: 10px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }

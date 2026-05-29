@@ -23,8 +23,9 @@ function generateSitemap() {
 
     // 2. Adicionar cada livro dinamicamente na nova rota
     books.forEach((book) => {
+      const bookIdentifier = book.slug || book.id;
       xml += `  <url>\n`;
-      xml += `    <loc>${BASE_URL}/frontend/pages/product.html?id=${book.id}</loc>\n`;
+      xml += `    <loc>${BASE_URL}/produto/${bookIdentifier}</loc>\n`;
       xml += `    <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>\n`;
       xml += `    <priority>0.8</priority>\n`;
       xml += `  </url>\n`;

@@ -16,6 +16,33 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
   </head>
   <body>
+    <!-- Firebase Integration -->
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js";
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyD8E4ENQtP0xu_qZHe8G5TjqGPsrybkLOg",
+        authDomain: "vivaleve258.firebaseapp.com",
+        projectId: "vivaleve258",
+        storageBucket: "vivaleve258.firebasestorage.app",
+        messagingSenderId: "39491335561",
+        appId: "1:39491335561:web:43c0980cf3720ebaf49d58",
+        measurementId: "G-X7T8582S06",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      if (app) {
+        console.log("Firebase initialized successfully");
+      } else {
+        console.error("Failed to initialize Firebase");
+      }
+    </script>
+
     <header class="main-header">
       <!-- Bloco Esquerdo: Logo e Navegação -->
       <div class="header-left">
@@ -34,15 +61,33 @@
       <!-- Bloco Direito: Busca, Auth e Favoritos -->
       <div class="header-right">
         <div class="search-box">
-          <input type="search" id="search-input" placeholder="Procurar..." class="search-input" />
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Procurar..."
+            class="search-input"
+          />
           <button class="btn-search-trigger" id="search-btn">PESQUISAR</button>
         </div>
         <div class="header-btn-group">
           <button class="btn-member">SEJA MEMBRO</button>
         </div>
-        <div class="favorites-wrapper">
-          <i class="ph ph-heart action-icon"></i>
-          <span id="favorites-count">0</span>
+        <div class="wishlist-counter-container" aria-label="Ver favoritos">
+          <svg
+            class="icon-heart"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+            ></path>
+          </svg>
+          <span id="favorites-count" class="wishlist-count">0</span>
         </div>
       </div>
     </header>
@@ -131,13 +176,20 @@
                 id="newsletter-email"
                 placeholder="Seu melhor e-mail"
                 required
-                class="newsletter-input"
+                class="input-email"
               />
               <span class="newsletter-error" id="newsletter-error"
                 >Por favor, insira um e-mail válido.</span
               >
             </div>
-            <button type="submit" class="btn-cta">Subscrever</button>
+            <button
+              type="submit"
+              class="btn-subscrever"
+              id="btn-newsletter-subscribe"
+            >
+              <span class="btn-text">Subscrever</span>
+              <span class="spinner"></span>
+            </button>
           </form>
         </div>
       </section>
@@ -211,7 +263,9 @@
     <aside id="favorites-drawer" class="favorites-drawer">
       <div class="drawer-header">
         <h2 class="poppins-bold">MEUS FAVORITOS</h2>
-        <button id="close-drawer" class="close-drawer" aria-label="Fechar menu">&times;</button>
+        <button id="close-drawer" class="close-drawer" aria-label="Fechar menu">
+          &times;
+        </button>
       </div>
       <div id="drawer-content" class="drawer-content"></div>
     </aside>
