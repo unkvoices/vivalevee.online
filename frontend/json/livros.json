@@ -7,7 +7,8 @@
     "categoriaTag": "mental",
     "preco": 0,
     "imagem": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
-    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "arquivoUrl": "../assets/ebooks/a-arte-da-clareza-mental.pdf"
   },
   { 
     "id": 2,

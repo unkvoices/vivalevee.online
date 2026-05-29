@@ -41,6 +41,25 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
+   * Renderiza Skeletons para Livros Relacionados
+   */
+  function renderRelatedSkeletons() {
+    const grid = document.getElementById("related-books-grid");
+    if (grid) {
+      grid.innerHTML = Array(4)
+        .fill(0)
+        .map(
+          () => `
+        <div class="skeleton-card">
+          <div class="skeleton skeleton-related"></div>
+        </div>
+      `,
+        )
+        .join("");
+    }
+  }
+
+  /**
    * Busca os dados do livro no arquivo JSON e gerencia o estado de carregamento
    */
   async function loadProductDetails() {
@@ -51,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       renderProductSkeleton();
+      renderRelatedSkeletons();
       // Requisição dos dados do catálogo
       const response = await fetch("../json/livros.json");
       const books = await response.json();
@@ -94,11 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
     injectJSONLD(book);
 
     const isFav = favorites.some((fav) => fav.id === book.id);
+    const downloadCounts =
+      JSON.parse(localStorage.getItem("downloadCounts")) || {};
+    const currentCount = downloadCounts[book.id] || 0;
+
     const formattedPrice =
       book.preco === 0 ? "DOWNLOAD GRATUITO" : `${book.preco.toFixed(2)} MT`;
-    
+
     const mainCtaText = book.preco === 0 ? "DOWNLOAD GRÁTIS" : "FAZER DOWNLOAD";
-    
+
     const categoriaNome = book.categoria || "Catálogo";
 
     container.innerHTML = `
@@ -128,8 +152,13 @@ document.addEventListener("DOMContentLoaded", () => {
             </button>
           </div>
 
+          <div class="download-stats" style="font-size: 0.8rem; color: #888; margin-bottom: 20px;">
+            <i class="ph ph-download-simple"></i> <span id="count-display">${currentCount}</span> downloads realizados
+          </div>
+
           <div class="product-actions">
-            <button class="btn-buy-now">${mainCtaText}</button>
+            <button class="btn-buy-now" id="main-download-btn">${mainCtaText}</button>
+            ${book.arquivoUrl ? `<button class="btn-direct-download" id="direct-download-btn">DOWNLOAD DIRETO</button>` : ""}
             <button class="btn-share" id="share-btn">
               <i class="ph ph-share-network"></i> Partilhar
             </button>
@@ -152,7 +181,41 @@ document.addEventListener("DOMContentLoaded", () => {
     document
       .getElementById("share-btn")
       .addEventListener("click", () => handleShare(book));
+
+    // Lógica de Download e Contador
+    const handleDownload = () => {
+      if (book.arquivoUrl) {
+        // Incrementar Contador Local
+        let counts = JSON.parse(localStorage.getItem("downloadCounts")) || {};
+        counts[book.id] = (counts[book.id] || 0) + 1;
+        localStorage.setItem("downloadCounts", JSON.stringify(counts));
+        document.getElementById("count-display").innerText = counts[book.id];
+
+        // Trigger Download
+        const link = document.createElement("a");
+        link.href = book.arquivoUrl;
+        link.download = `${book.titulo}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    };
+
+    document
+      .getElementById("main-download-btn")
+      ?.addEventListener("click", handleDownload);
+    document
+      .getElementById("direct-download-btn")
+      ?.addEventListener("click", handleDownload);
   }
+
+  // Adicione estas funções ao final do product.js (similares ao app.js) para o Drawer funcionar aqui também
+  function openFavoritesDrawer() {
+    renderFavoritesDrawer();
+    document.getElementById("favorites-drawer").classList.add("open");
+    document.getElementById("drawer-overlay").style.display = "block";
+  }
+  // ... implementar renderFavoritesDrawer e listeners de fechar conforme app.js ...
 
   /**
    * Renderiza livros da mesma categoria (Relacionados)
@@ -162,7 +225,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!relatedGrid) return;
 
     const related = allBooks
-      .filter(b => b.categoriaTag === currentBook.categoriaTag && b.id !== currentBook.id)
+      .filter(
+        (b) =>
+          b.categoriaTag === currentBook.categoriaTag &&
+          b.id !== currentBook.id,
+      )
       .slice(0, 4);
 
     if (related.length === 0) {
@@ -170,8 +237,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    relatedGrid.innerHTML = related.map((book, index) => {
-      return `
+    relatedGrid.innerHTML = related
+      .map((book, index) => {
+        return `
         <article class="book-card fade-in-node" style="animation-delay: ${index * 0.1}s" onclick="window.location.href='product.html?id=${book.id}'">
             <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy">
             <div class="book-info">
@@ -180,7 +248,8 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </article>
       `;
-    }).join("");
+      })
+      .join("");
   }
 
   /**

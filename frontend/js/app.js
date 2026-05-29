@@ -105,6 +105,7 @@ window.addToFavorites = (event, id) => {
   if (index === -1) {
     favorites.push(book);
     btn.classList.add("active");
+    openFavoritesDrawer();
   } else {
     favorites.splice(index, 1);
     btn.classList.remove("active");
@@ -113,6 +114,64 @@ window.addToFavorites = (event, id) => {
   localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
   updateFavoritesUI();
 };
+
+/**
+ * Lógica do Drawer de Favoritos
+ */
+function openFavoritesDrawer() {
+  renderFavoritesDrawer();
+  document.getElementById("favorites-drawer").classList.add("open");
+  document.getElementById("drawer-overlay").style.display = "block";
+  document.body.style.overflow = "hidden";
+}
+
+function closeFavoritesDrawer() {
+  document.getElementById("favorites-drawer").classList.remove("open");
+  document.getElementById("drawer-overlay").style.display = "none";
+  document.body.style.overflow = "auto";
+}
+
+function renderFavoritesDrawer() {
+  const content = document.getElementById("drawer-content");
+  if (!content) return;
+
+  if (favorites.length === 0) {
+    content.innerHTML = `<p class="empty-drawer-msg">Ainda não tens livros nos teus favoritos.</p>`;
+    return;
+  }
+
+  content.innerHTML = favorites
+    .map(
+      (book) => `
+    <div class="drawer-item">
+      <img src="${book.imagem}" alt="${book.titulo}">
+      <div class="drawer-item-info">
+        <span class="drawer-item-title">${book.titulo}</span>
+        <button class="btn-remove-fav" onclick="removeFromDrawer(${book.id})">Remover</button>
+      </div>
+    </div>
+  `,
+    )
+    .join("");
+}
+
+window.removeFromDrawer = (id) => {
+  favorites = favorites.filter((fav) => fav.id !== id);
+  localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+  updateFavoritesUI();
+  renderFavoritesDrawer();
+  renderBooks(allBooks); // Sincroniza os corações na grade
+};
+
+document
+  .getElementById("close-drawer")
+  ?.addEventListener("click", closeFavoritesDrawer);
+document
+  .getElementById("drawer-overlay")
+  ?.addEventListener("click", closeFavoritesDrawer);
+document
+  .querySelector(".favorites-wrapper")
+  ?.addEventListener("click", openFavoritesDrawer);
 
 /**
  * Atualiza o contador de favoritos no cabeçalho
