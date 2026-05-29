@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (countDisplay) {
       countDisplay.innerText = favorites.length;
     }
+    const container = document.querySelector(".wishlist-counter-container");
+    container?.classList.toggle("has-items", favorites.length > 0);
   }
 
   function triggerCounterAnimation() {
@@ -385,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .getElementById("drawer-overlay")
     ?.addEventListener("click", closeFavoritesDrawer);
   document
-    .querySelector(".favorites-wrapper")
+    .querySelector(".wishlist-counter-container")
     ?.addEventListener("click", openFavoritesDrawer);
 
   /**

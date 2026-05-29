@@ -30,6 +30,7 @@ async function init() {
 
     // Simulando um pequeno delay para que o skeleton seja visível (opcional)
     setTimeout(() => {
+      changeBackgroundByCategory("all"); // Aplica cor de fundo padrão
       renderBooks(allBooks);
       updateFavoritesUI();
     }, 800);
@@ -62,6 +63,25 @@ function renderSkeletons() {
 }
 
 /**
+ * Muda a cor de fundo baseado na categoria
+ * @param {string} category
+ */
+function changeBackgroundByCategory(category) {
+  // Remove todas as classes de categoria
+  document.body.classList.remove(
+    "category-all",
+    "category-alimentacao",
+    "category-conto",
+    "category-romance",
+    "category-mental",
+    "category-fantasias",
+  );
+
+  // Adiciona a classe da categoria selecionada
+  document.body.classList.add(`category-${category}`);
+}
+
+/**
  * Renderiza a grade de livros dinamicamente
  * @param {Array} books
  */
@@ -69,9 +89,12 @@ function renderBooks(books) {
   booksGrid.innerHTML = books
     .map((book, index) => {
       const isFav = favorites.some((fav) => fav.id === book.id);
+
       return `
-        <article class="book-card fade-in-node" style="animation-delay: ${index * 0.05}s" data-category="${book.categoria}" onclick="window.location.href='frontend/pages/product.html?id=${book.id}'">
-            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy" onload="this.classList.add('img-loaded')">
+        <article class="book-card fade-in-node" style="animation-delay: ${index * 0.05}s" data-category="${book.categoriaTag}" onclick="window.location.href='frontend/pages/product.html?id=${book.id}'">
+            <div style="position: relative;">
+              <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy" onload="this.classList.add('img-loaded')">
+            </div>
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
                 <span class="book-price">${book.preco === 0 ? "Grátis" : book.preco.toFixed(2) + " MT"}</span>
@@ -188,7 +211,7 @@ document
   .getElementById("drawer-overlay")
   ?.addEventListener("click", closeFavoritesDrawer);
 document
-  .querySelector(".favorites-wrapper")
+  .querySelector(".wishlist-counter-container")
   ?.addEventListener("click", openFavoritesDrawer);
 
 /**
@@ -206,6 +229,8 @@ function triggerCounterAnimation() {
  */
 function updateFavoritesUI() {
   favoritesCountDisplay.innerText = favorites.length;
+  const container = document.querySelector(".wishlist-counter-container");
+  container?.classList.toggle("has-items", favorites.length > 0);
 }
 
 /**
@@ -244,6 +269,9 @@ function applyFilter(tag) {
     tag === "all"
       ? allBooks
       : allBooks.filter((book) => book.categoriaTag === tag);
+
+  // Muda a cor de fundo baseado na categoria
+  changeBackgroundByCategory(tag);
 
   renderBooks(filtered);
 }
