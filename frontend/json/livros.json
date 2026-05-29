@@ -2,21 +2,23 @@
   {
     "id": 1,
     "slug": "a-arte-da-clareza-mental",
-    "titulo": "A Arte da Clareza Mental",
+    "titulo": "Não vai dar - Cynthia Hand",
     "autor": "F. A. Chico",
     "categoriaTag": "mental",
-    "preco": 0,
+    "preco": 90,
     "imagem": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
-    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "arquivoUrl": "../assets/ebooks/a-arte-da-clareza-mental.pdf"
+    "arquivoUrl": "../assets/ebooks/a-arte-da-clareza-mental.pdf",
+    "descricao": "A vida de Ada está uma bagunça. Ela estava pronta para finalmente ter a primeira vez — depois de uma tentativa humilhante de perder a virgindade —, mas acabou de pegar o namorado a traindo.\n \n Agora, de férias com a família no Havaí, ela quer viver coisas novas, pintar seus quadros e se permitir! Mas tudo vai por água abaixo quando descobre que a própria mãe está tendo um caso e logo depois briga com a sua perfeita irmã mais velha (que também é sua melhor amiga). \n \n  Sem saber como manter a família junta diante de tantos conflitos, sentindo-se confusa, frustrada e deprimida em pleno paraíso, Ada precisa se distrair. É então que um plano surge: e se ela der uma chance para o garoto bonitinho que não desviou o olhar dela desde que chegaram no hotel? \n \n Mas, quando decide que vai parar de pensar e começar a fazer — sexo —, seu plano revela a inconveniente verdade de que sentimentos, sejam eles românticos ou não, sempre entram no caminho."
   },
-  { 
+  {
     "id": 2,
     "slug": "saude-essencial",
     "titulo": "Saúde Essencial",
     "autor": "Dr. Aris",
     "categoriaTag": "alimentacao",
     "preco": 280.0,
-    "imagem": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400"
+    "imagem": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&q=80&w=400",
+    "arquivoUrl": "../assets/ebooks/saude-essencial.pdf",
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   }
 ]

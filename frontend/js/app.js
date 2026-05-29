@@ -71,7 +71,7 @@ function renderBooks(books) {
       const isFav = favorites.some((fav) => fav.id === book.id);
       return `
         <article class="book-card fade-in-node" style="animation-delay: ${index * 0.05}s" data-category="${book.categoria}" onclick="window.location.href='frontend/pages/product.html?id=${book.id}'">
-            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy">
+            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy" onload="this.classList.add('img-loaded')">
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
                 <span class="book-price">${book.preco === 0 ? "Grátis" : book.preco.toFixed(2) + " MT"}</span>
@@ -149,13 +149,15 @@ function renderFavoritesDrawer() {
     return;
   }
 
-  content.innerHTML = `
+  content.innerHTML =
+    `
     <div class="drawer-actions">
       <button class="btn-clear-all" onclick="clearAllFavorites()">Limpar Tudo</button>
     </div>
-  ` + favorites
-    .map(
-      (book) => `
+  ` +
+    favorites
+      .map(
+        (book) => `
     <div class="drawer-item">
       <div class="drawer-item-clickable" onclick="window.location.href='frontend/pages/product.html?id=${book.id}'">
         <img src="${book.imagem}" alt="${book.titulo}">
@@ -167,8 +169,8 @@ function renderFavoritesDrawer() {
       <button class="btn-remove-fav" onclick="removeFromDrawer(${book.id})">Remover</button>
     </div>
   `,
-    )
-    .join("");
+      )
+      .join("");
 }
 
 window.removeFromDrawer = (id) => {

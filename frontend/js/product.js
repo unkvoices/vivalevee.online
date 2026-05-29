@@ -160,22 +160,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const formattedPrice =
       book.preco === 0 ? "DOWNLOAD GRATUITO" : `${book.preco.toFixed(2)} MT`;
 
-    const mainCtaText = book.preco === 0 ? "DOWNLOAD GRÁTIS" : "FAZER DOWNLOAD";
+    const mainCtaText = book.preco === 0 ? "DOWNLOAD GRÁTIS" : "COMPRAR";
 
     const categoriaNome = book.categoria || "Catálogo";
 
     container.innerHTML = `
       <div class="product-page-wrapper">
         <div class="product-media">
-          <img src="${book.imagem}" alt="${book.titulo}" class="product-main-image">
+          <img src="${book.imagem}" alt="${book.titulo}" class="product-main-image" onload="this.classList.add('img-loaded')">
         </div>
         
         <div class="product-content">
-          <a href="index.html" class="btn-back">
+          <a href="../../index.html" class="btn-back">
             <i class="ph ph-arrow-left"></i> Voltar ao Catálogo
           </a>
           <nav class="breadcrumb">
-            <a href="index.html">Início</a> / <span>${categoriaNome}</span>
+            <a href="../../index.html">Início</a> / <span>${categoriaNome}</span>
           </nav>
           
           <h1 class="product-title poppins-bold">${book.titulo}</h1>
@@ -196,8 +196,8 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
 
           <div class="product-actions">
-            <button class="btn-buy-now" id="main-download-btn">${mainCtaText}</button>
-            ${book.arquivoUrl ? `<button class="btn-direct-download" id="direct-download-btn">DOWNLOAD DIRETO</button>` : ""}
+            <button class="btn-buy-now" id="main-download-btn" data-id="${book.id}" data-price="${book.preco}">${mainCtaText}</button>
+            ${book.preco === 0 && book.arquivoUrl ? `<button class="btn-direct-download" id="direct-download-btn">DOWNLOAD DIRETO</button>` : ""}
             <button class="btn-share" id="share-btn">
               <i class="ph ph-share-network"></i> Partilhar
             </button>
@@ -222,7 +222,28 @@ document.addEventListener("DOMContentLoaded", () => {
       .addEventListener("click", () => handleShare(book));
 
     // Lógica de Download e Contador
-    const handleDownload = () => {
+    const handleDownload = (e) => {
+      const btn = e.currentTarget;
+      const id = btn.dataset.id;
+      const price = parseFloat(btn.dataset.price);
+
+      // BÔNUS: Verificação de segurança para evitar chamadas com dados corrompidos
+      if (!id || isNaN(price)) {
+        console.error(
+          "Viva Leve: Erro crítico ao capturar atributos do produto (data-id/data-price).",
+        );
+        return;
+      }
+
+      // Se o livro for pago, interceptamos a ação para o novo modal de pagamento
+      if (price > 0) {
+        e.preventDefault(); // Intercepta o comportamento de link/default
+        if (typeof window.abrirModalPagamento === "function") {
+          window.abrirModalPagamento(price, id);
+        }
+        return;
+      }
+
       if (book.arquivoUrl) {
         const mainBtn = document.getElementById("main-download-btn");
         const directBtn = document.getElementById("direct-download-btn");
@@ -391,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .map((book, index) => {
         return `
         <article class="book-card fade-in-node" style="animation-delay: ${index * 0.1}s" onclick="window.location.href='product.html?id=${book.id}'">
-            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy">
+            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy" onload="this.classList.add('img-loaded')">
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
                 <span class="book-price">${book.preco === 0 ? "GRÁTIS" : book.preco.toFixed(2) + " MT"}</span>
