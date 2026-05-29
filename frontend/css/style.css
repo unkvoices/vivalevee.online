@@ -521,8 +521,11 @@ h2 {
 
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 40px 20px;
+  /* Aumentado para 260px para cards maiores e mais legíveis */
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+  gap: 28px; /* Gap levemente aumentado para acompanhar o tamanho dos cards */
+  max-width: 1130px; /* Cálculo: (4 * 260px) + (3 * 28px gap) + margem de respiro */
+  margin: 0 auto; /* Centraliza o grid em ecrãs ultra-wide */
   padding-bottom: 50px;
 }
 
@@ -530,7 +533,7 @@ h2 {
 @media (max-width: 480px) {
   .books-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 25px 12px; /* Reduz o espaçamento entre os cards */
+    gap: 16px; /* Gap consistente no mobile */
     padding-bottom: 30px;
   }
   .book-cover {
@@ -543,7 +546,7 @@ h2 {
     font-size: 0.85rem; /* Texto ligeiramente menor */
   }
   .btn-favorite {
-    bottom: 8px;
+    top: 135px; /* Alinhado ao canto inferior da imagem (170px) no mobile */
     right: 8px;
   }
 }
@@ -558,6 +561,8 @@ h2 {
   height: 100%;
   justify-content: flex-start;
   position: relative;
+  max-width: 280px; /* Permite que o card cresça um pouco mais que o minmax antes de quebrar */
+  margin: 0 auto; /* Centraliza o card na sua célula da grid */
 }
 
 .book-card:hover {
@@ -567,25 +572,30 @@ h2 {
 .book-cover {
   width: 100%;
   display: block;
-  height: 240px;
-  object-fit: contain;
+  height: 350px; /* Aumentado para dar destaque à arte da capa */
+  object-fit: contain; /* Garante que a capa não seja cortada nem distorcida */
   object-position: bottom;
   border-radius: 4px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   opacity: 0;
-  transition: opacity 0.6s ease-in-out, transform 0.3s ease;
+  transition: opacity 0.6s ease-in-out, transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* Efeito de Zoom Suave na Imagem */
+.book-card:hover .book-cover {
+  transform: scale(1.05);
 }
 
 .book-info {
   text-align: center;
   margin-top: auto;
-  padding-top: 15px;
+  padding: 12px 4px 0; /* Padding interno ajustado */
 }
 
 .book-title {
   color: var(--text-primary);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.9rem; /* Fonte ligeiramente reduzida para equilíbrio */
   margin: 0 auto 5px auto;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* Limita a 2 linhas para manter o alinhamento */
@@ -596,7 +606,7 @@ h2 {
 
 .book-price {
   color: #888;
-  font-size: 0.9rem;
+  font-size: 0.85rem; /* Preço discretamente menor */
   display: block;
 }
 
@@ -856,8 +866,8 @@ h2 {
 
 .btn-favorite {
   position: absolute;
-  bottom: 15px;
-  right: 15px;
+  top: 310px; /* Ajustado para a nova altura da imagem (350px - margem) */
+  right: 12px;
   background: transparent;
   border: none;
   padding: 0;
@@ -898,7 +908,7 @@ h2 {
 /* Ajuste Skeleton para o novo layout */
 .skeleton-cover {
   width: 100%;
-  height: 240px;
+  height: 350px; /* Sincronizado com a nova altura das capas */
   border-radius: 4px;
 }
 @media (max-width: 480px) {

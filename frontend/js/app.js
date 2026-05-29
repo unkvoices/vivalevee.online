@@ -331,6 +331,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const newsletterForm = document.getElementById("newsletter-form");
   const newsletterEmail = document.getElementById("newsletter-email");
   const newsletterError = document.getElementById("newsletter-error");
+  const subscribeButton = document.getElementById("btn-newsletter-subscribe"); // Referência ao botão
+  const spinner = subscribeButton?.querySelector(".spinner"); // Referência ao spinner
 
   // Validação em tempo real
   newsletterEmail?.addEventListener("input", (e) => {
@@ -346,11 +348,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  newsletterForm?.addEventListener("submit", (e) => {
+  newsletterForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const email = newsletterEmail.value;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+
+    // 1. Mostrar estado de carregamento
+    if (subscribeButton) {
+      subscribeButton.disabled = true; // Desabilita o botão
+      subscribeButton.classList.add("loading"); // Adiciona classe para mostrar spinner
+    }
+
+    // 2. Simular uma operação assíncrona (ex: envio para um servidor)
+    await new Promise((resolve) => setTimeout(resolve, 1500)); // Simula 1.5 segundos de atraso
 
     const container = document.querySelector(".newsletter-container");
     container.innerHTML = `
@@ -360,6 +371,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>A sua inscrição foi realizada com sucesso. Em breve receberá as nossas novidades.</p>
       </div>
     `;
+
+    // 3. O estado do botão é automaticamente "resetado" porque o container é substituído.
+    // Se o container não fosse substituído, seria necessário remover a classe 'loading' e reabilitar o botão aqui.
 
     startConfetti();
   });

@@ -20,5 +20,49 @@
     "imagem": "https://odhfykeew6gmtlxe.public.blob.vercel-storage.com/o_1jlubte9qvlb1qbb1s0p1kq22ck15-qU4F02D8EhLnJZyyD1qLt8nolIpUSz.jpg",
     "arquivoUrl": "../assets/ebooks/linhas-borradas.pdf",
     "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  },
+  {
+    "id": 1,
+    "slug": "Não-vai-dar",
+    "titulo": "Não vai dar",
+    "autor": "Cynthia Hand",
+    "categoriaTag": "romance",
+    "preco": 90,
+    "imagem": "https://odhfykeew6gmtlxe.public.blob.vercel-storage.com/o_1jluc2hkc1kdu18u81kic1jhu1rni1a.jpg",
+    "arquivoUrl": "../assets/ebooks/a-arte-da-clareza-mental.pdf",
+    "descricao": "A vida de Ada está uma bagunça. Ela estava pronta para finalmente ter a primeira vez — depois de uma tentativa humilhante de perder a virgindade —, mas acabou de pegar o namorado a traindo.\n \b Agora, de férias com a família no Havaí, ela quer viver coisas novas, pintar seus quadros e se permitir! Mas tudo vai por água abaixo quando descobre que a própria mãe está tendo um caso e logo depois briga com a sua perfeita irmã mais velha (que também é sua melhor amiga). \n \n  Sem saber como manter a família junta diante de tantos conflitos, sentindo-se confusa, frustrada e deprimida em pleno paraíso, Ada precisa se distrair. É então que um plano surge: e se ela der uma chance para o garoto bonitinho que não desviou o olhar dela desde que chegaram no hotel? \n \n Mas, quando decide que vai parar de pensar e começar a fazer — sexo —, seu plano revela a inconveniente verdade de que sentimentos, sejam eles românticos ou não, sempre entram no caminho."
+  },
+  {
+    "id": 2,
+    "slug": "Linhas-Borradas",
+    "titulo": "Linhas Borradas",
+    "autor": " Cora Kenborn",
+    "categoriaTag": "romance",
+    "preco": 90.0,
+    "imagem": "https://odhfykeew6gmtlxe.public.blob.vercel-storage.com/o_1jlubte9qvlb1qbb1s0p1kq22ck15-qU4F02D8EhLnJZyyD1qLt8nolIpUSz.jpg",
+    "arquivoUrl": "../assets/ebooks/linhas-borradas.pdf",
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  },
+  {
+    "id": 1,
+    "slug": "Não-vai-dar",
+    "titulo": "Não vai dar",
+    "autor": "Cynthia Hand",
+    "categoriaTag": "romance",
+    "preco": 90,
+    "imagem": "https://odhfykeew6gmtlxe.public.blob.vercel-storage.com/o_1jluc2hkc1kdu18u81kic1jhu1rni1a.jpg",
+    "arquivoUrl": "../assets/ebooks/a-arte-da-clareza-mental.pdf",
+    "descricao": "A vida de Ada está uma bagunça. Ela estava pronta para finalmente ter a primeira vez — depois de uma tentativa humilhante de perder a virgindade —, mas acabou de pegar o namorado a traindo.\n \b Agora, de férias com a família no Havaí, ela quer viver coisas novas, pintar seus quadros e se permitir! Mas tudo vai por água abaixo quando descobre que a própria mãe está tendo um caso e logo depois briga com a sua perfeita irmã mais velha (que também é sua melhor amiga). \n \n  Sem saber como manter a família junta diante de tantos conflitos, sentindo-se confusa, frustrada e deprimida em pleno paraíso, Ada precisa se distrair. É então que um plano surge: e se ela der uma chance para o garoto bonitinho que não desviou o olhar dela desde que chegaram no hotel? \n \n Mas, quando decide que vai parar de pensar e começar a fazer — sexo —, seu plano revela a inconveniente verdade de que sentimentos, sejam eles românticos ou não, sempre entram no caminho."
+  },
+  {
+    "id": 2,
+    "slug": "Linhas-Borradas",
+    "titulo": "Linhas Borradas",
+    "autor": " Cora Kenborn",
+    "categoriaTag": "romance",
+    "preco": 90.0,
+    "imagem": "https://odhfykeew6gmtlxe.public.blob.vercel-storage.com/o_1jlubte9qvlb1qbb1s0p1kq22ck15-qU4F02D8EhLnJZyyD1qLt8nolIpUSz.jpg",
+    "arquivoUrl": "../assets/ebooks/linhas-borradas.pdf",
+    "descricao": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   }
 ]
