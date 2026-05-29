@@ -12,11 +12,12 @@
     />
     <link rel="icon" type="image/png" href="frontend/assets/favicon.png" />
     <link rel="stylesheet" href="frontend/css/style.css" />
-    <!-- Phosphor Icons para ícones minimalistas -->
+    <!-- Biblioteca de ícones Phosphor -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
   </head>
   <body>
     <header class="main-header">
+      <!-- Bloco Esquerdo: Logo e Navegação -->
       <div class="header-left">
         <a href="/" class="logo">
           <img src="frontend/assets/favicon.png" alt="Viva Leve Logo" />
@@ -30,6 +31,7 @@
         </nav>
       </div>
 
+      <!-- Bloco Direito: Busca, Auth e Favoritos -->
       <div class="header-right">
         <input type="search" placeholder="Procurar..." class="search-input" />
         <div class="header-btn-group">
@@ -44,6 +46,7 @@
     </header>
 
     <main>
+      <!-- Seção de Destaque (Hero) -->
       <section class="hero-section">
         <div class="hero-container">
           <div class="hero-icon">
@@ -77,6 +80,7 @@
         <i class="ph ph-caret-down select-icon"></i>
       </div>
 
+      <!-- Filtros de Categorias Desktop -->
       <nav class="categories-nav container">
         <ul class="categories-list">
           <li>
@@ -108,6 +112,7 @@
         </ul>
       </nav>
 
+      <!-- Grade de Livros (Injetada pelo JS) -->
       <section class="books-showcase container">
         <div id="books-grid" class="books-grid"></div>
       </section>

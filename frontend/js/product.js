@@ -4,19 +4,26 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Elementos do DOM e Estado Inicial
   const container = document.getElementById("product-details-container");
   const params = new URLSearchParams(window.location.search);
-  const bookId = parseInt(params.get("id"));
+  const bookId = parseInt(params.get("id")); // Recupera o ID da URL (?id=X)
 
   // Recuperar favoritos do LocalStorage para consistência
   let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
   updateFavoritesCount();
 
+  /**
+   * Atualiza o contador de favoritos no cabeçalho
+   */
   function updateFavoritesCount() {
     const countDisplay = document.getElementById("favorites-count");
     if (countDisplay) countDisplay.innerText = favorites.length;
   }
 
+  /**
+   * Renderiza o estado de carregamento (Skeleton)
+   */
   function renderProductSkeleton() {
     container.innerHTML = `
       <div class="product-page-wrapper skeleton-product">
@@ -33,6 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
+  /**
+   * Busca os dados do livro no arquivo JSON e gerencia o estado de carregamento
+   */
   async function loadProductDetails() {
     if (!bookId) {
       renderError("Produto não encontrado.");
@@ -41,8 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       renderProductSkeleton();
-      // Fetch dos dados (ajustar caminho se necessário conforme a localização da HTML)
-      const response = await fetch("./frontend/json/livros.json");
+      // Requisição dos dados do catálogo
+      const response = await fetch("../json/livros.json");
       const books = await response.json();
       const book = books.find((b) => b.id === bookId);
 
@@ -59,19 +69,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /**
+   * Injeta o HTML dinâmico do produto e as meta tags de SEO
+   * @param {Object} book - Objeto contendo os dados do livro
+   */
   function renderProduct(book) {
     // Atualização dinâmica das Meta Tags para SEO e Browser
     document.title = `${book.titulo} - Viva Leve`;
-    
+
     const ogTitle = document.getElementById("og-title");
     const ogDesc = document.getElementById("og-description");
     const ogImg = document.getElementById("og-image");
     const ogUrl = document.getElementById("og-url");
 
     if (ogTitle) ogTitle.setAttribute("content", book.titulo);
-    if (ogDesc) ogDesc.setAttribute("content", book.descricao || "Saúde e Bem-Estar");
+    if (ogDesc)
+      ogDesc.setAttribute("content", book.descricao || "Saúde e Bem-Estar");
     if (ogImg) ogImg.setAttribute("content", book.imagem);
     if (ogUrl) ogUrl.setAttribute("content", window.location.href);
+
+    injectJSONLD(book);
 
     const isFav = favorites.some((fav) => fav.id === book.id);
     const formattedPrice =
@@ -130,6 +147,72 @@ document.addEventListener("DOMContentLoaded", () => {
       .addEventListener("click", () => handleShare(book));
   }
 
+  /**
+   * Injeta dados estruturados (JSON-LD) para otimização de Rich Snippets no Google
+   * @param {Object} book 
+   */
+  function injectJSONLD(book) {
+    // Remove script anterior se existir (evita duplicados em SPAs ou navegação interna)
+    const existingScript = document.getElementById("json-ld-product");
+    if (existingScript) existingScript.remove();
+
+    const script = document.createElement("script");
+    script.id = "json-ld-product";
+    script.type = "application/ld+json";
+
+    // Define a raiz do site para garantir links absolutos corretos no Breadcrumb
+    const siteRoot = window.location.origin + "/";
+
+    const bookSchema = {
+      "@type": "Book",
+      name: book.titulo,
+      author: { "@type": "Person", name: book.autor },
+      image: book.imagem,
+      description: book.descricao || "Saúde e Bem-Estar",
+      offers: {
+        "@type": "Offer",
+        price: book.preco,
+        priceCurrency: "MZN",
+        availability: "https://schema.org/InStock",
+      },
+    };
+
+    const breadcrumbSchema = {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Início",
+          item: `${siteRoot}index.html`,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: book.categoria,
+          item: `${siteRoot}index.html?tag=${book.categoriaTag}`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: book.titulo,
+          item: window.location.href,
+        },
+      ],
+    };
+
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [bookSchema, breadcrumbSchema],
+    });
+
+    document.head.appendChild(script);
+  }
+
+  /**
+   * Gerencia a partilha nativa (Web Share API) ou copia o link no Desktop
+   * @param {Object} book 
+   */
   async function handleShare(book) {
     const shareData = {
       title: `Viva Leve - ${book.titulo}`,
@@ -153,6 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  /**
+   * Alterna o estado de favorito de um livro e persiste no LocalStorage
+   * @param {Event} event 
+   * @param {Object} book 
+   */
   function toggleFavorite(event, book) {
     const btn = event.currentTarget;
     const index = favorites.findIndex((fav) => fav.id === book.id);
@@ -177,6 +265,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateFavoritesCount();
   }
 
+  /**
+   * Renderiza uma mensagem de erro caso o produto não seja encontrado
+   * @param {string} msg 
+   */
   function renderError(msg) {
     container.innerHTML = `<div class="error-state"><p>${msg}</p><a href="index.html">Voltar ao catálogo</a></div>`;
   }

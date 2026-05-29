@@ -1,3 +1,6 @@
+/**
+ * Viva Leve - Lógica Principal (Catálogo, Filtros e Newsletter)
+ */
 let allBooks = [];
 let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
 
@@ -14,7 +17,9 @@ const favoritesCountDisplay = document.getElementById("favorites-count");
 const filterLinks = document.querySelectorAll(".category-link");
 const mobileFilter = document.getElementById("mobile-category-filter");
 
-// 1. Fetch & Initialize
+/**
+ * Inicializa a aplicação, carregando os dados do JSON e tratando skeletons
+ */
 async function init() {
   try {
     renderSkeletons(); // Mostra o loading antes do fetch
@@ -32,6 +37,9 @@ async function init() {
   }
 }
 
+/**
+ * Renderiza os cartões de carregamento visual
+ */
 function renderSkeletons() {
   const skeletons = Array(4)
     .fill(0)
@@ -51,13 +59,16 @@ function renderSkeletons() {
   booksGrid.innerHTML = skeletons;
 }
 
-// 2. Renderizar Cartões
+/**
+ * Renderiza a grade de livros dinamicamente
+ * @param {Array} books 
+ */
 function renderBooks(books) {
   booksGrid.innerHTML = books
     .map((book) => {
       const isFav = favorites.some((fav) => fav.id === book.id);
       return `
-        <article class="book-card" data-category="${book.categoria}" onclick="window.location.href='product.html?id=${book.id}'">
+        <article class="book-card" data-category="${book.categoria}" onclick="window.location.href='frontend/pages/product.html?id=${book.id}'">
             <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy">
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
@@ -74,7 +85,11 @@ function renderBooks(books) {
     .join("");
 }
 
-// 3. Lógica do Carrinho
+/**
+ * Adiciona ou remove um livro dos favoritos via clique no ícone de coração
+ * @param {Event} event 
+ * @param {number} id 
+ */
 window.addToFavorites = (event, id) => {
   // Impede que o clique no botão de favorito dispare o clique do card (redirecionamento)
   event.stopPropagation();
@@ -97,11 +112,17 @@ window.addToFavorites = (event, id) => {
   updateFavoritesUI();
 };
 
+/**
+ * Atualiza o contador de favoritos no cabeçalho
+ */
 function updateFavoritesUI() {
   favoritesCountDisplay.innerText = favorites.length;
 }
 
-// 4. Filtros
+/**
+ * Filtra os livros baseando-se na tagId
+ * @param {string} tag 
+ */
 function applyFilter(tag) {
   const filtered =
     tag === "all"
@@ -129,7 +150,9 @@ mobileFilter?.addEventListener("change", (e) => {
   applyFilter(category);
 });
 
-// 5. Cabeçalho Sticky (Scroll up reveal)
+/**
+ * Lógica de Header Sticky (Revelar ao subir o scroll)
+ */
 let lastScrollTop = 0;
 const header = document.querySelector(".main-header");
 
@@ -146,7 +169,9 @@ window.addEventListener("scroll", () => {
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 });
 
-// 6. Confetti Logic
+/**
+ * Gera o efeito de confetti usando a API de Canvas
+ */
 function startConfetti() {
   const canvas = document.getElementById("confetti-canvas");
   const ctx = canvas.getContext("2d");

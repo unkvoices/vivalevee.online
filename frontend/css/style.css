@@ -1,3 +1,4 @@
+/* --- Variáveis Globais e Configurações de Tema --- */
 :root {
   --bg-color: #121212;
   --surface: #1e1e1e;
@@ -48,7 +49,7 @@ a {
   box-sizing: border-box;
 }
 
-/* --- New Split Header Layout --- */
+/* --- Cabeçalho (Header) --- */
 .main-header {
   display: flex;
   justify-content: space-between;
@@ -296,6 +297,7 @@ h2 {
   }
 }
 
+/* --- Seção Hero --- */
 .hero-section {
   background-color: #1a1a1a;
   padding: 160px 20px 100px; /* Padding superior compensa o header fixo */
@@ -720,6 +722,7 @@ h2 {
   display: none;
 } /* Ocultar botão no layout minimalista */
 
+/* --- Rodapé (Footer) --- */
 .site-footer {
   background-color: #1a1a1a;
   padding: 60px 20px 40px;
