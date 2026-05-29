@@ -273,5 +273,24 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = `<div class="error-state"><p>${msg}</p><a href="index.html">Voltar ao catálogo</a></div>`;
   }
 
+  /**
+   * Lógica de Header Sticky (Revelar ao subir o scroll)
+   */
+  let lastScrollTop = 0;
+  const header = document.querySelector(".main-header");
+
+  window.addEventListener("scroll", () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop && scrollTop > 100) {
+      // Scrolling down - Esconder
+      header.style.transform = "translateY(-100%)";
+    } else {
+      // Scrolling up - Mostrar
+      header.style.transform = "translateY(0)";
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  });
+
   loadProductDetails();
 });
