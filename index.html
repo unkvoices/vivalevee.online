@@ -23,7 +23,46 @@
         </a>
         <nav>
           <ul class="nav-links">
-            <li><a href="#" class="nav-link">Livros</a></li>
+            <li class="dropdown">
+              <a href="#" class="nav-link"
+                >Livros <i class="ph ph-caret-down"></i
+              ></a>
+              <div class="dropdown-menu">
+                <input
+                  type="text"
+                  class="dropdown-filter"
+                  placeholder="Digite para filtrar..."
+                />
+                <ul class="dropdown-list">
+                  <li>
+                    <a href="#" class="dropdown-item"
+                      ><span class="dot dot-green"></span> Alimentação
+                      Saudável</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="dropdown-item"
+                      ><span class="dot dot-blue"></span> Conto</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="dropdown-item"
+                      ><span class="dot dot-red"></span> Ficção & Fantasias</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="dropdown-item"
+                      ><span class="dot dot-cyan"></span> Romance</a
+                    >
+                  </li>
+                  <li>
+                    <a href="#" class="dropdown-item"
+                      ><span class="dot dot-green"></span> Saúde Mental</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </li>
             <li><a href="#" class="nav-link">Alimentação & Hábitos</a></li>
             <li><a href="#" class="nav-link">Saúde & Bem-estar</a></li>
           </ul>
@@ -118,9 +157,42 @@
         </ul>
       </nav>
 
-      <section class="products container">
+      <section class="books-showcase container">
         <div id="books-grid" class="books-grid">
-          <!-- Injetado via JS -->
+          <!-- Exemplo de estrutura para 3 cards (serão substituídos pelo JS) -->
+          <article class="book-card">
+            <img
+              src="https://via.placeholder.com/400x600/1e1e1e/ffffff?text=Capa+Livro+1"
+              alt="Livro 1"
+              class="book-cover"
+            />
+            <div class="book-info">
+              <h3 class="book-title">20 Dicas para viver melhor</h3>
+              <span class="book-price">US$1,99</span>
+            </div>
+          </article>
+          <article class="book-card">
+            <img
+              src="https://via.placeholder.com/400x600/1e1e1e/ffffff?text=Capa+Livro+2"
+              alt="Livro 2"
+              class="book-cover"
+            />
+            <div class="book-info">
+              <h3 class="book-title">O Poder do Hábito</h3>
+              <span class="book-price">US$2,99</span>
+            </div>
+          </article>
+          <article class="book-card">
+            <img
+              src="https://via.placeholder.com/400x600/1e1e1e/ffffff?text=Capa+Livro+3"
+              alt="Livro 3"
+              class="book-cover"
+            />
+            <div class="book-info">
+              <h3 class="book-title">Saúde Mental e Emocional</h3>
+              <span class="book-price">US$0,99</span>
+            </div>
+          </article>
         </div>
       </section>
 

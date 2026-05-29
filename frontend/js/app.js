@@ -49,17 +49,10 @@ function renderBooks(books) {
     .map(
       (book) => `
         <article class="book-card" data-category="${book.categoria}">
-            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy">
+            <img src="${book.imagem}" alt="${book.titulo}" class="book-cover" loading="lazy" onclick="window.location.href='#product-${book.id}'">
             <div class="book-info">
                 <h3 class="book-title">${book.titulo}</h3>
-                <p class="book-author">${book.autor}</p>
                 <span class="book-price">${book.preco.toFixed(2)} MT</span>
-                <button class="add-btn" onclick="addToCart(event, ${book.id})">
-                    <svg class="heart-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.84-8.84 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                    Adicionar
-                </button>
             </div>
         </article>
     `,
@@ -103,7 +96,7 @@ function applyFilter(category) {
 
 // Eventos para Filtros Desktop
 filterLinks.forEach((btn) => {
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
     e.preventDefault();
     filterLinks.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
