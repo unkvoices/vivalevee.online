@@ -36,6 +36,15 @@ const searchBtn = document.getElementById("search-btn");
 onAuthStateChanged(auth, async (user) => {
   currentUser = user;
   if (user) {
+    // Atualizar UI do Header para utilizador logado
+    const authBtn = document.querySelector(".btn-member");
+    if (authBtn) {
+      authBtn.innerText = "MEU PERFIL";
+      authBtn.onclick = () => {
+        window.location.href = "frontend/pages/profile.html";
+      };
+    }
+
     const userRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(userRef);
     if (docSnap.exists() && docSnap.data().favorites) {
@@ -43,6 +52,14 @@ onAuthStateChanged(auth, async (user) => {
       localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
       updateFavoritesUI();
       renderBooks(allBooks);
+    }
+  } else {
+    // Caso não esteja logado, garantir que o botão aponte para o login
+    const authBtn = document.querySelector(".btn-member");
+    if (authBtn) {
+      authBtn.onclick = () => {
+        window.location.href = "frontend/pages/login.html";
+      };
     }
   }
 });

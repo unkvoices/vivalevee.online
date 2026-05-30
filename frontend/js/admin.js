@@ -28,8 +28,15 @@ onAuthStateChanged(auth, async (user) => {
     const userSnap = await getDoc(userRef);
 
     if (userSnap.exists() && userSnap.data().role === "admin") {
-      loginSection.style.display = "none";
-      adminSection.style.display = "block";
+      if (!user.emailVerified) {
+        loginMsg.innerText =
+          "Por favor, verifique o seu e-mail antes de aceder ao painel.";
+        loginMsg.style.display = "block";
+        await signOut(auth); // Força logout para garantir re-verificação
+      } else {
+        loginSection.style.display = "none";
+        adminSection.style.display = "block";
+      }
     } else {
       // Utilizador logado mas não é admin
       await signOut(auth);

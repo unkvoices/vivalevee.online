@@ -7,6 +7,7 @@
   --text-white: #ffffff;
   --text-dim: #a0a0a0;
   --error: #ff4d4d;
+  --gold-glow: rgba(255, 215, 0, 0.15);
 }
 
 * {
@@ -77,6 +78,33 @@ body.auth-page {
   background-color: var(--gold);
 }
 
+/* Seletor de Métodos Interno */
+.method-selector {
+  display: flex;
+  background: var(--input-bg);
+  padding: 4px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.method-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: none;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.method-btn.active {
+  background: var(--gold);
+  color: var(--pure-black);
+}
+
 /* Formulários */
 .auth-form {
   display: none;
@@ -98,6 +126,16 @@ body.auth-page {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.method-fields {
+  display: none;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.method-fields.active {
+  display: flex;
 }
 
 .input-group {
@@ -124,6 +162,43 @@ body.auth-page {
   text-decoration: none;
 }
 
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrapper input {
+  width: 100%;
+  padding-right: 3rem;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 1rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+  color: var(--gold);
+}
+
+/* Status do Username */
+.status-indicator {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-available {
+  color: #00ff88;
+}
+.status-taken {
+  color: var(--error);
+}
+
 input,
 select {
   height: 52px; /* Touch area confortável */
@@ -141,7 +216,7 @@ input:focus,
 select:focus {
   outline: none;
   border-color: var(--gold);
-  box-shadow: 0 0 0 1px var(--gold);
+  box-shadow: 0 0 12px var(--gold-glow);
 }
 
 /* Botões */

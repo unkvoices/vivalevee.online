@@ -30,29 +30,64 @@
 
         <!-- Formulário de Login -->
         <form id="login-form" class="auth-form active">
-          <div class="input-group">
-            <label for="login-email">E-mail</label>
-            <input
-              type="email"
-              id="login-email"
-              placeholder="teu@email.com"
-              required
-            />
+          <!-- Seletor de Método de Login -->
+          <div class="method-selector">
+            <button type="button" class="method-btn active" data-method="email">
+              E-mail
+            </button>
+            <button type="button" class="method-btn" data-method="phone">
+              Telemóvel
+            </button>
           </div>
-          <div class="input-group">
-            <div class="label-row">
-              <label for="login-password">Palavra-passe</label>
-              <a href="#" id="forgot-password-link" class="helper-link"
-                >Esqueci-me?</a
-              >
+
+          <!-- Campos E-mail/Senha -->
+          <div id="login-email-fields" class="method-fields active">
+            <div class="input-group">
+              <label for="login-email">E-mail</label>
+              <input
+                type="email"
+                id="login-email"
+                placeholder="teu@email.com"
+                required
+              />
             </div>
-            <input
-              type="password"
-              id="login-password"
-              placeholder="••••••••"
-              required
-            />
+            <div class="input-group">
+              <div class="label-row">
+                <label for="login-password">Palavra-passe</label>
+                <a href="#" id="forgot-password-link" class="helper-link"
+                  >Esqueci-me?</a
+                >
+              </div>
+              <div class="input-wrapper">
+                <input
+                  type="password"
+                  id="login-password"
+                  placeholder="••••••••"
+                  required
+                />
+                <i class="ph ph-eye toggle-password"></i>
+              </div>
+            </div>
           </div>
+
+          <!-- Campos Telemóvel -->
+          <div id="login-phone-fields" class="method-fields">
+            <div class="input-group">
+              <label for="login-phone">Número de Telemóvel</label>
+              <input type="tel" id="login-phone" placeholder="+258 84XXXXXXX" />
+            </div>
+            <div id="otp-container" class="input-group" style="display: none">
+              <label for="login-otp">Código de Verificação</label>
+              <input
+                type="text"
+                id="login-otp"
+                placeholder="6 dígitos"
+                maxlength="6"
+              />
+            </div>
+            <div id="recaptcha-container"></div>
+          </div>
+
           <button type="submit" class="btn-primary">Entrar no Painel</button>
         </form>
 
@@ -68,11 +103,14 @@
             />
           </div>
           <div class="input-group">
-            <label for="reg-username">Username único</label>
+            <div class="label-row">
+              <label for="reg-username">Username único</label>
+              <span id="username-status" class="status-indicator"></span>
+            </div>
             <input
               type="text"
               id="reg-username"
-              placeholder="Ex: viva.premium"
+              placeholder="Ex: @viva.premium"
               required
             />
           </div>
@@ -97,12 +135,15 @@
           </div>
           <div class="input-group">
             <label for="reg-password">Palavra-passe</label>
-            <input
-              type="password"
-              id="reg-password"
-              placeholder="Mínimo 6 caracteres"
-              required
-            />
+            <div class="input-wrapper">
+              <input
+                type="password"
+                id="reg-password"
+                placeholder="Mínimo 6 caracteres"
+                required
+              />
+              <i class="ph ph-eye toggle-password"></i>
+            </div>
           </div>
           <button type="submit" class="btn-primary">Finalizar Registo</button>
         </form>

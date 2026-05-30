@@ -1,13 +1,16 @@
 /**
  * Viva Leve - Auth Logic (Modular Firebase v10)
  */
-import { auth, db } from "./firebase-config.js";
+import { auth, db, functions } from "./firebase-config.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
   sendPasswordResetEmail,
+  sendEmailVerification,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   collection,
@@ -19,9 +22,12 @@ import {
   serverTimestamp,
   updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { httpsCallable } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js";
 const googleProvider = new GoogleAuthProvider();
 
 const msgEl = document.getElementById("auth-message");
+let usernameTimer;
+let confirmationResult = null;
 
 // --- Alternar Abas ---
 document.querySelectorAll(".tab-btn").forEach((btn) => {
@@ -41,6 +47,35 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
   });
 });
 
+// --- Alternar Métodos de Login (Email vs Phone) ---
+document.querySelectorAll(".method-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document
+      .querySelectorAll(".method-btn")
+      .forEach((b) => b.classList.remove("active"));
+    document
+      .querySelectorAll(".method-fields")
+      .forEach((f) => f.classList.remove("active"));
+    btn.classList.add("active");
+    document
+      .getElementById(`login-${btn.dataset.method}-fields`)
+      .classList.add("active");
+  });
+});
+
+// --- Configuração do reCAPTCHA ---
+const initRecaptcha = () => {
+  if (!window.recaptchaVerifier) {
+    window.recaptchaVerifier = new RecaptchaVerifier(
+      auth,
+      "recaptcha-container",
+      {
+        size: "invisible",
+      },
+    );
+  }
+};
+
 // Função auxiliar para migrar favoritos do LocalStorage para o Firestore
 async function syncFavoritesToFirestore(userId) {
   const localFavs = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
@@ -49,6 +84,22 @@ async function syncFavoritesToFirestore(userId) {
     await updateDoc(userRef, { favorites: localFavs });
   }
 }
+
+// --- Funcionalidade Ver Senha ---
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+  icon.addEventListener("click", () => {
+    const input = icon.previousElementSibling;
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.replace("ph-eye", "ph-eye-slash");
+      icon.style.color = "var(--gold)";
+    } else {
+      input.type = "password";
+      icon.classList.replace("ph-eye-slash", "ph-eye");
+      icon.style.color = "var(--text-dim)";
+    }
+  });
+});
 
 // --- Máscara de Username em Tempo Real ---
 const usernameField = document.getElementById("reg-username");
@@ -61,6 +112,31 @@ usernameField.addEventListener("input", (e) => {
     val = "@" + val.slice(1).replace(/[^a-zA-Z0-9_]/g, "");
   }
   e.target.value = val;
+
+  // Verificação em tempo real (Debounce de 500ms)
+  const statusEl = document.getElementById("username-status");
+  statusEl.innerText = "";
+  clearTimeout(usernameTimer);
+
+  if (val.length > 3) {
+    usernameTimer = setTimeout(async () => {
+      try {
+        const q = query(collection(db, "users"), where("username", "==", val));
+        const snap = await getDocs(q);
+
+        if (!snap.empty) {
+          statusEl.innerText = "Indisponível";
+          statusEl.className = "status-indicator status-taken";
+        } else {
+          statusEl.innerText = "Disponível";
+          statusEl.className = "status-indicator status-available";
+        }
+      } catch (err) {
+        console.error("Erro ao verificar username:", err);
+        statusEl.innerText = "Erro na verificação";
+      }
+    }, 500);
+  }
 });
 
 // --- Criar Conta ---
@@ -73,6 +149,7 @@ document
     const email = document.getElementById("reg-email").value.trim();
     const country = document.getElementById("reg-country").value;
     const password = document.getElementById("reg-password").value;
+    const adminCode = document.getElementById("reg-admin-code").value.trim();
 
     // Normalizar username
     const normalizedUsername = username.startsWith("@")
@@ -99,7 +176,7 @@ document
       );
       const user = userCredential.user;
 
-      // 3. Gravar dados adicionais
+      // 3. Gravar dados básicos (Sempre como 'user' inicialmente)
       await setDoc(doc(db, "users", user.uid), {
         fullName: name,
         username: normalizedUsername,
@@ -109,9 +186,24 @@ document
         role: "user",
       });
 
+      // 4. Enviar e-mail de verificação
+      await sendEmailVerification(user);
+
+      // 5. Se houver código admin, chamar a Cloud Function de forma segura
+      if (adminCode) {
+        const verifyAdmin = httpsCallable(functions, "verifyAdminCode");
+        await verifyAdmin({ adminCode });
+      }
+
       await syncFavoritesToFirestore(user.uid);
 
-      window.location.href = "profile.html";
+      // Feedback visual e redirecionamento condicional
+      msgEl.innerText =
+        "Conta criada! Por favor, confirme o seu e-mail para libertar o acesso total.";
+      msgEl.style.color = "var(--gold)";
+      setTimeout(() => {
+        window.location.href = "profile.html";
+      }, 3000);
     } catch (error) {
       handleAuthError(error);
     }
@@ -120,19 +212,60 @@ document
 // --- Login Normal ---
 document.getElementById("login-form").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const email = document.getElementById("login-email").value;
-  const password = document.getElementById("login-password").value;
+  const activeMethod =
+    document.querySelector(".method-btn.active").dataset.method;
+  const btn = document.getElementById("btn-login-submit");
 
   try {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
-    await syncFavoritesToFirestore(userCredential.user.uid);
-    window.location.href = "profile.html";
+    if (activeMethod === "email") {
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      await syncFavoritesToFirestore(userCredential.user.uid);
+      window.location.href = "profile.html";
+    } else {
+      // Lógica de Telefone
+      if (!confirmationResult) {
+        initRecaptcha();
+        const phoneNumber = document.getElementById("login-phone").value;
+        btn.innerText = "A ENVIAR SMS...";
+        confirmationResult = await signInWithPhoneNumber(
+          auth,
+          phoneNumber,
+          window.recaptchaVerifier,
+        );
+        document.getElementById("otp-container").style.display = "block";
+        btn.innerText = "VERIFICAR CÓDIGO";
+      } else {
+        const code = document.getElementById("login-otp").value;
+        const result = await confirmationResult.confirm(code);
+        const user = result.user;
+
+        // Criar perfil base se for novo utilizador via Telefone
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+            fullName: "Utilizador SMS",
+            username: `@user_${user.uid.slice(0, 5)}`,
+            email: user.phoneNumber,
+            lastLogin: serverTimestamp(),
+            role: "user",
+          },
+          { merge: true },
+        );
+
+        await syncFavoritesToFirestore(user.uid);
+        window.location.href = "profile.html";
+      }
+    }
   } catch (error) {
     handleAuthError(error);
+    btn.innerText = "Entrar no Painel";
+    confirmationResult = null;
   }
 });
 
@@ -167,17 +300,22 @@ document
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
-      // Opcional: Criar perfil no Firestore se for novo utilizador
-      await setDoc(
-        doc(db, "users", user.uid),
-        {
-          fullName: user.displayName,
-          email: user.email,
-          photoURL: user.photoURL,
-          lastLogin: serverTimestamp(),
-        },
-        { merge: true },
-      );
+      try {
+        // Criar perfil no Firestore se for novo utilizador
+        await setDoc(
+          doc(db, "users", user.uid),
+          {
+            fullName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            lastLogin: serverTimestamp(),
+            role: "user", // Define role padrão
+          },
+          { merge: true },
+        );
+      } catch (dbErr) {
+        console.error("Erro ao salvar perfil Google no Firestore:", dbErr);
+      }
 
       await syncFavoritesToFirestore(user.uid);
 
@@ -212,6 +350,10 @@ function handleAuthError(error) {
       break;
     case "auth/popup-closed-by-user":
       message = "Login com Google cancelado.";
+      break;
+    case "auth/configuration-not-found":
+      message =
+        "Erro interno: O método de login não está ativado no Firebase Console.";
       break;
   }
 
