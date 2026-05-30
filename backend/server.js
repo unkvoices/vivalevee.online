@@ -8,7 +8,7 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 1. SECURITY MIDDLEWARES
+// 1. SECURITY MIDDLEWARES 
 app.use(
   helmet({
     contentSecurityPolicy: {
