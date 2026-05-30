@@ -90,7 +90,7 @@ router.get("/checkout/status/:reference", async (req, res) => {
 
     res.json({ status: order.status, downloadToken: order.downloadToken });
   } catch (error) {
-    res.status(500).json({ error: "Erro ao consultar status" });
+    res.status(500).json({ error: "Erro ao consultar status" }); 
   }
 });
 

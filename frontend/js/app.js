@@ -1,6 +1,22 @@
 /**
  * Viva Leve - Lógica Principal (Catálogo, Filtros e Newsletter)
  */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+// Mesma configuração usada no admin.js
+const firebaseConfig = {
+  /* ... tuas credenciais ... */
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 let allBooks = [];
 let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
 
@@ -25,8 +41,12 @@ const searchBtn = document.getElementById("search-btn");
 async function init() {
   try {
     renderSkeletons(); // Mostra o loading antes do fetch
-    const response = await fetch("./frontend/json/livros.json");
-    allBooks = await response.json();
+
+    // Busca do Firestore em vez do JSON
+    const q = query(collection(db, "books"), orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    allBooks = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
     // Simulando um pequeno delay para que o skeleton seja visível (opcional)
     setTimeout(() => {

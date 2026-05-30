@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel | Viva Leve</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+  <body>
+    <!-- 1. ECRÃ DE LOGIN -->
+    <section id="login-section">
+      <h1 class="admin-logo">VIVA<span>LEVE</span></h1>
+      <p class="subtitle">Acesso Restrito ao Administrador</p>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label>E-mail</label>
+          <input
+            type="email"
+            id="login-email"
+            placeholder="admin@vivalevee.online"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label>Palavra-passe</label>
+          <input
+            type="password"
+            id="login-password"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+        <button type="submit" class="btn-premium">Entrar no Painel</button>
+        <div id="login-msg" class="message error"></div>
+      </form>
+    </section>
+
+    <!-- 2. PAINEL DE PUBLICAÇÃO -->
+    <section id="admin-section">
+      <div class="panel-header">
+        <h2 class="poppins-bold">Publicar Novo Conteúdo</h2>
+        <button class="btn-logout" id="btn-logout">Sair</button>
+      </div>
+
+      <form id="publish-form" class="form-grid">
+        <div class="form-group" style="grid-column: span 2">
+          <label>Título do Livro</label>
+          <input
+            type="text"
+            id="book-title"
+            placeholder="Ex: A Arte da Clareza Mental"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Autor</label>
+          <input
+            type="text"
+            id="book-author"
+            placeholder="Nome do autor"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label>Preço (MT)</label>
+          <input
+            type="number"
+            id="book-price"
+            step="0.01"
+            placeholder="0.00"
+            required
+          />
+        </div>
+
+        <div class="form-group" style="grid-column: span 2">
+          <label>URL da Imagem da Capa (Capa Digital)</label>
+          <input
+            type="url"
+            id="book-image"
+            placeholder="https://imagem-do-storage.jpg"
+            required
+          />
+        </div>
+
+        <div class="form-group" style="grid-column: span 2">
+          <label for="book-file">Ficheiro PDF do Livro (Upload Direto)</label>
+          <input
+            type="file"
+            id="book-file"
+            title="Selecione o ficheiro PDF do livro"
+            accept=".pdf"
+            style="padding: 10px"
+            required
+          />
+        </div>
+
+        <div class="form-group" style="grid-column: span 2">
+          <label for="book-category">Categoria</label>
+          <select id="book-category" title="Selecione a categoria do livro" required>
+            <option value="" disabled selected>Selecionar categoria...</option>
+            <option value="all">Todos os Livros</option>
+            <option value="alimentacao-habitos">Alimentação & Hábitos</option>
+            <option value="alimentacao">Alimentação Saudável</option>
+            <option value="conto">Conto</option>
+            <option value="fantasias">Ficção & Fantasias</option>
+            <option value="romance">Romance</option>
+            <option value="mental">Saúde Mental & Emocional</option>
+          </select>
+        </div>
+
+        <div style="grid-column: span 2">
+          <button type="submit" class="btn-premium" id="btn-publish">
+            Publicar Livro
+          </button>
+          <div id="publish-msg" class="message"></div>
+        </div>
+      </form>
+    </section>
+
+    <script type="module" src="../js/admin.js"></script>
+  </body>
+</html>
