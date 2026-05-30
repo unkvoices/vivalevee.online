@@ -1,21 +1,13 @@
 /**
  * Viva Leve - Lógica Principal (Catálogo, Filtros e Newsletter)
  */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { db, analytics } from "./firebase-config.js";
 import {
-  getFirestore,
   collection,
   getDocs,
   query,
   orderBy,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// Mesma configuração usada no admin.js
-const firebaseConfig = {
-  /* ... tuas credenciais ... */
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 let allBooks = [];
 let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];

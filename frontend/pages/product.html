@@ -52,7 +52,12 @@
       </div>
       <div class="header-right">
         <div class="search-box">
-          <input type="search" id="search-input" placeholder="Procurar..." class="search-input" />
+          <input
+            type="search"
+            id="search-input"
+            placeholder="Procurar..."
+            class="search-input"
+          />
           <button class="btn-search-trigger" id="search-btn">PESQUISAR</button>
         </div>
         <div class="header-btn-group">
@@ -87,7 +92,9 @@
     <aside id="favorites-drawer" class="favorites-drawer">
       <div class="drawer-header">
         <h2 class="poppins-bold">MEUS FAVORITOS</h2>
-        <button id="close-drawer" class="close-drawer" aria-label="Fechar menu">&times;</button>
+        <button id="close-drawer" class="close-drawer" aria-label="Fechar menu">
+          &times;
+        </button>
       </div>
       <div id="drawer-content" class="drawer-content"></div>
     </aside>
@@ -95,14 +102,19 @@
     <!-- Modal de Pagamento Premium -->
     <div id="payment-modal" class="payment-modal">
       <div class="payment-card">
-        <button id="payment-back" class="btn-modal-back" style="display: none;"><i class="ph ph-arrow-left"></i> VOLTAR</button>
+        <button id="payment-back" class="btn-modal-back" style="display: none">
+          <i class="ph ph-arrow-left"></i> VOLTAR
+        </button>
         <button class="close-payment-modal" aria-label="Fechar">&times;</button>
-        
+
         <!-- ETAPA 0: Seleção de Método -->
         <div id="payment-step-0">
           <h2 class="poppins-bold">FORMA DE PAGAMENTO</h2>
-          <span class="price-display">Valor a pagar: <strong class="modal-amount-val">0.00 MT</strong></span>
-          
+          <span class="price-display"
+            >Valor a pagar:
+            <strong class="modal-amount-val">0.00 MT</strong></span
+          >
+
           <div class="payment-methods-grid">
             <div class="method-card" data-method="mpesa">
               <i class="ph ph-phone-call"></i>
@@ -124,19 +136,33 @@
         </div>
 
         <!-- ETAPA 1A: Mobile Money (M-Pesa / e-Mola) -->
-        <div id="payment-step-1a" style="display: none;">
+        <div id="payment-step-1a" style="display: none">
           <h2 class="poppins-bold" id="mobile-money-title">PAGAMENTO</h2>
-          <span class="price-display">Total: <strong class="modal-amount-val">0.00 MT</strong></span>
-          <p class="step-desc">Introduza o número de conta para receber o pedido de confirmação.</p>
-          <input type="tel" id="checkout-phone" placeholder="Ex: 84XXXXXXX" class="checkout-input" maxlength="9">
-          <button id="confirm-payment" class="btn-pay-confirm">CONFIRMAR E PAGAR</button>
+          <span class="price-display"
+            >Total: <strong class="modal-amount-val">0.00 MT</strong></span
+          >
+          <p class="step-desc">
+            Introduza o número de conta para receber o pedido de confirmação.
+          </p>
+          <input
+            type="tel"
+            id="checkout-phone"
+            placeholder="Ex: 84XXXXXXX"
+            class="checkout-input"
+            maxlength="9"
+          />
+          <button id="confirm-payment" class="btn-pay-confirm">
+            CONFIRMAR E PAGAR
+          </button>
         </div>
 
         <!-- ETAPA 1B: PayPal -->
-        <div id="payment-step-1b" style="display: none;">
+        <div id="payment-step-1b" style="display: none">
           <h2 class="poppins-bold">PAYPAL</h2>
-          <span class="price-display">Total: <strong class="modal-amount-val">0.00 MT</strong></span>
-          <div id="paypal-button-container" style="margin-top: 20px;">
+          <span class="price-display"
+            >Total: <strong class="modal-amount-val">0.00 MT</strong></span
+          >
+          <div id="paypal-button-container" style="margin-top: 20px">
             <!-- Placeholder para o SDK do PayPal -->
             <div class="paypal-placeholder">
               <i class="ph ph-paypal-logo"></i>
@@ -146,7 +172,7 @@
         </div>
 
         <!-- ETAPA 1C: Conta Bancária -->
-        <div id="payment-step-1c" style="display: none;">
+        <div id="payment-step-1c" style="display: none">
           <h2 class="poppins-bold">TRANSFERÊNCIA</h2>
           <div class="bank-details-card">
             <p><strong>BANCO:</strong> BIM / Millennium</p>
@@ -154,15 +180,26 @@
             <p><strong>NIB:</strong> 0001 0000 1234 5678 9012 3</p>
             <p><strong>TITULAR:</strong> VIVA LEVE LTDA</p>
           </div>
-          <p class="step-desc">Envie o comprovativo para o nosso WhatsApp após realizar a transferência.</p>
-          <button class="btn-pay-confirm" onclick="window.open('https://wa.me/258XXXXXXXXX')">ENVIAR COMPROVATIVO</button>
+          <p class="step-desc">
+            Envie o comprovativo para o nosso WhatsApp após realizar a
+            transferência.
+          </p>
+          <button
+            class="btn-pay-confirm"
+            onclick="window.open(`https://wa.me/258842539668`)"
+          >
+            ENVIAR COMPROVATIVO
+          </button>
         </div>
 
         <!-- Etapa 2: Aguardando Pagamento -->
-        <div id="payment-step-2" style="display: none;">
+        <div id="payment-step-2" style="display: none">
           <div class="spinner-minimal"></div>
           <h2 class="poppins-bold">A AGUARDAR PAGAMENTO...</h2>
-          <p class="pulsing-text">Por favor, introduza o PIN no seu telemóvel para confirmar a transação.</p>
+          <p class="pulsing-text">
+            Por favor, introduza o PIN no seu telemóvel para confirmar a
+            transação.
+          </p>
         </div>
       </div>
     </div>

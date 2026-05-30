@@ -1,6 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { auth, db } from "./firebase-config.js";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -8,7 +7,6 @@ import {
   sendPasswordResetEmail,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
-  getFirestore,
   collection,
   query,
   where,
@@ -17,20 +15,6 @@ import {
   setDoc,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-// CONFIGURAÇÃO (Usa as credenciais do teu index.html)
-const firebaseConfig = {
-  apiKey: "AIzaSyD8E4ENQtP0xu_qZHe8G5TjqGPsrybkLOg",
-  authDomain: "vivaleve258.firebaseapp.com",
-  projectId: "vivaleve258",
-  storageBucket: "vivaleve258.firebasestorage.app",
-  messagingSenderId: "39491335561",
-  appId: "1:39491335561:web:43c0980cf3720ebaf49d58",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
 const msgEl = document.getElementById("auth-message");
