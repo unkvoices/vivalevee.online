@@ -1,0 +1,215 @@
+:root {
+  --bg: #0a0a0a;
+  --card: #161616;
+  --gold: #ffd700;
+  --text: #ffffff;
+  --text-dim: #888;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Urbanist", sans-serif;
+  margin: 0;
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.profile-sidebar {
+  background: #111;
+  padding: 40px 20px;
+  border-right: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.profile-header-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 50px;
+}
+.profile-header-mini img {
+  width: 30px;
+}
+.profile-header-mini h2 {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+.profile-header-mini span {
+  color: var(--gold);
+}
+
+.profile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.profile-nav a {
+  padding: 15px;
+  text-decoration: none;
+  color: var(--text-dim);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: 0.3s;
+}
+
+.profile-nav a.active,
+.profile-nav a:hover {
+  background: rgba(255, 215, 0, 0.05);
+  color: var(--gold);
+}
+
+.profile-main {
+  padding: 60px;
+  overflow-y: auto;
+}
+
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  background: var(--card);
+  border-radius: 24px;
+  padding: 50px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.edit-btn-top {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255,255,255,0.05);
+  border: none;
+  color: var(--gold);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.edit-btn-top:hover { background: rgba(255,215,0,0.1); transform: scale(1.1); }
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  background: var(--gold);
+  color: #000;
+  font-size: 2.5rem;
+  font-weight: 800;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+  text-align: left;
+}
+
+.profile-input {
+  width: 100%;
+  background: #222;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px;
+  color: #fff;
+  margin-bottom: 10px;
+  font-family: inherit;
+}
+
+.profile-input:focus { border-color: var(--gold); outline: none; }
+
+.edit-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.btn-gold, .btn-outline {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 0.9rem;
+}
+
+.btn-gold { background: var(--gold); border: none; color: #000; }
+.btn-gold:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+.btn-outline { background: transparent; border: 1px solid #333; color: #fff; }
+.btn-outline:hover { background: rgba(255,255,255,0.05); }
+
+/* Favorites Section */
+.profile-favorites { margin-top: 20px; }
+.profile-favorites h2 { font-size: 1.5rem; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.fav-item {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.03);
+  transition: 0.3s;
+}
+
+.fav-item:hover { transform: translateY(-5px); border-color: var(--gold); }
+.fav-item img { width: 100%; border-radius: 6px; margin-bottom: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+.fav-item h3 { font-size: 0.9rem; margin: 5px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.btn-remove-fav {
+  background: transparent;
+  border: none;
+  color: #ff4d4d;
+  font-size: 0.75rem;
+  cursor: pointer;
+  margin-top: 5px;
+}
+.detail-item label {
+  display: block;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.detail-item span {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.logout {
+  margin-top: auto;
+  color: #ff4d4d !important;
+}
+
+@media (max-width: 768px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
+  }
+  .profile-sidebar {
+    display: none;
+  }
+}

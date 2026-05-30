@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>O Meu Perfil | Viva Leve</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/profile.css" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  </head>
+  <body>
+    <div class="profile-layout">
+      <aside class="profile-sidebar">
+        <div class="profile-header-mini">
+          <img src="../assets/favicon.png" alt="Viva Leve" />
+          <h2>VIVA<span>LEVE</span></h2>
+        </div>
+        <nav class="profile-nav">
+          <a href="../../index.html"><i class="ph ph-house"></i> Início</a>
+          <a href="#" class="active"><i class="ph ph-user"></i> Perfil</a>
+          <a href="#" id="logout-btn" class="logout"
+            ><i class="ph ph-sign-out"></i> Sair</a
+          >
+        </nav>
+      </aside>
+
+      <main class="profile-main">
+        <div class="profile-container">
+          <div class="profile-card skeleton" id="user-info-card">
+            <button id="edit-profile-btn" class="edit-btn-top" title="Editar Perfil">
+              <i class="ph ph-pencil-simple"></i>
+            </button>
+
+            <div class="user-avatar" id="user-initials">--</div>
+            
+            <div id="view-mode">
+              <h1 id="user-name">Carregando...</h1>
+              <p id="user-handle">@username</p>
+            </div>
+
+            <div id="edit-mode" style="display: none;">
+              <input type="text" id="edit-name" class="profile-input" placeholder="Nome Completo">
+              <input type="text" id="edit-username" class="profile-input" placeholder="Username">
+            </div>
+
+          <div class="user-details-grid">
+            <div class="detail-item">
+              <label>E-mail</label>
+              <span id="user-email">...</span>
+            </div>
+            <div class="detail-item">
+              <label>País</label>
+              <span id="user-location">...</span>
+            </div>
+            <div class="detail-item">
+              <label>Membro desde</label>
+              <span id="user-joined">...</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="../js/profile.js"></script>
+  </body>
+</html>

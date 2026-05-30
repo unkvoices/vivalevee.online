@@ -12,6 +12,11 @@
     />
     <link rel="stylesheet" href="../css/login.css" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link
+      rel="shortcut icon"
+      href="../assets/favicon.png"
+      type="image/x-icon"
+    />
   </head>
   <body>
     <!-- Fundo de Partículas Animadas -->
@@ -40,16 +45,16 @@
 
         <!-- Formulário de Login -->
         <form id="login-form" class="auth-form active">
-          <div class="input-group">
+          <div class="input-field-group">
             <label for="login-email">E-mail</label>
             <input
               type="email"
               id="login-email"
-              placeholder="teu@email.com"
+              placeholder="Ex: joao@email.com"
               required
             />
           </div>
-          <div class="input-group">
+          <div class="input-field-group">
             <label for="login-password">Palavra-passe</label>
             <input
               type="password"
@@ -57,33 +62,36 @@
               placeholder="••••••••"
               required
             />
+            <a href="#" id="forgot-password-link" class="auth-aux-link">
+              Esqueci-me da palavra-passe?
+            </a>
           </div>
-          <button type="submit" class="btn-primary">Entrar</button>
+          <button type="submit" class="btn-primary">Entrar no Painel</button>
         </form>
 
         <!-- Formulário de Registo -->
         <form id="register-form" class="auth-form">
           <div class="form-grid">
-            <div class="input-group">
+            <div class="input-field-group">
               <label for="reg-name">Nome Completo</label>
               <input
                 type="text"
                 id="reg-name"
-                placeholder="Ex: João Silva"
+                placeholder="Ex: António Manuel"
                 required
               />
             </div>
-            <div class="input-group">
+            <div class="input-field-group">
               <label for="reg-username">Username</label>
               <input
                 type="text"
                 id="reg-username"
-                placeholder="@joaosilva"
+                placeholder="Ex: antoniomanuel"
                 required
               />
             </div>
           </div>
-          <div class="input-group">
+          <div class="input-field-group">
             <label for="reg-email">E-mail</label>
             <input
               type="email"
@@ -116,16 +124,11 @@
           <button type="submit" class="btn-primary">Criar Conta</button>
         </form>
 
-        <div class="divider">
+        <div class="auth-divider">
           <span>ou continuar com</span>
         </div>
 
         <button id="google-auth-btn" class="btn-google">
-          <img
-            src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/action/done.svg"
-            alt=""
-            style="display: none"
-          />
           <svg viewBox="0 0 48 48" width="20" height="20">
             <path
               fill="#EA4335"

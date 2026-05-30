@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getFirestore,
@@ -50,6 +51,19 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
       .classList.add("active");
     msgEl.innerText = "";
   });
+});
+
+// --- Máscara de Username em Tempo Real ---
+const usernameField = document.getElementById("reg-username");
+usernameField.addEventListener("input", (e) => {
+  let val = e.target.value;
+  // Forçar o prefixo @ se houver conteúdo
+  if (val && !val.startsWith("@")) val = "@" + val;
+  // Permitir apenas alfanuméricos e underscores após o @
+  if (val.length > 1) {
+    val = "@" + val.slice(1).replace(/[^a-zA-Z0-9_]/g, "");
+  }
+  e.target.value = val;
 });
 
 // --- Criar Conta ---
@@ -98,7 +112,7 @@ document
         role: "user",
       });
 
-      window.location.href = "../../index.html";
+      window.location.href = "profile.html";
     } catch (error) {
       handleAuthError(error);
     }
@@ -112,11 +126,34 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    window.location.href = "../../index.html";
+    window.location.href = "profile.html";
   } catch (error) {
     handleAuthError(error);
   }
 });
+
+// --- Recuperar Palavra-passe ---
+document
+  .getElementById("forgot-password-link")
+  .addEventListener("click", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("login-email").value;
+
+    if (!email) {
+      msgEl.innerText =
+        "Insira o seu e-mail no campo acima para recuperar a senha.";
+      msgEl.style.color = "var(--error)";
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      msgEl.innerText = "E-mail de recuperação enviado com sucesso!";
+      msgEl.style.color = "var(--success)";
+    } catch (error) {
+      handleAuthError(error);
+    }
+  });
 
 // --- Login com Google ---
 document
@@ -138,7 +175,7 @@ document
         { merge: true },
       );
 
-      window.location.href = "../../index.html";
+      window.location.href = "profile.html";
     } catch (error) {
       handleAuthError(error);
     }
