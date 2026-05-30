@@ -1,3 +1,6 @@
+/**
+ * Viva Leve - Auth Logic (Modular Firebase v10)
+ */
 import { auth, db } from "./firebase-config.js";
 import {
   createUserWithEmailAndPassword,
@@ -14,6 +17,7 @@ import {
   doc,
   setDoc,
   serverTimestamp,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 const googleProvider = new GoogleAuthProvider();
 
@@ -37,6 +41,15 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
   });
 });
 
+// Função auxiliar para migrar favoritos do LocalStorage para o Firestore
+async function syncFavoritesToFirestore(userId) {
+  const localFavs = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
+  if (localFavs.length > 0) {
+    const userRef = doc(db, "users", userId);
+    await updateDoc(userRef, { favorites: localFavs });
+  }
+}
+
 // --- Máscara de Username em Tempo Real ---
 const usernameField = document.getElementById("reg-username");
 usernameField.addEventListener("input", (e) => {
@@ -55,9 +68,9 @@ document
   .getElementById("register-form")
   .addEventListener("submit", async (e) => {
     e.preventDefault();
-    const name = document.getElementById("reg-name").value;
-    const username = document.getElementById("reg-username").value;
-    const email = document.getElementById("reg-email").value;
+    const name = document.getElementById("reg-name").value.trim();
+    const username = document.getElementById("reg-username").value.trim();
+    const email = document.getElementById("reg-email").value.trim();
     const country = document.getElementById("reg-country").value;
     const password = document.getElementById("reg-password").value;
 
@@ -96,6 +109,8 @@ document
         role: "user",
       });
 
+      await syncFavoritesToFirestore(user.uid);
+
       window.location.href = "profile.html";
     } catch (error) {
       handleAuthError(error);
@@ -109,7 +124,12 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
   const password = document.getElementById("login-password").value;
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password,
+    );
+    await syncFavoritesToFirestore(userCredential.user.uid);
     window.location.href = "profile.html";
   } catch (error) {
     handleAuthError(error);
@@ -158,6 +178,8 @@ document
         },
         { merge: true },
       );
+
+      await syncFavoritesToFirestore(user.uid);
 
       window.location.href = "profile.html";
     } catch (error) {

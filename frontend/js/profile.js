@@ -18,7 +18,6 @@ onAuthStateChanged(auth, async (user) => {
   }
   currentUser = user;
   loadUserData();
-  loadFavorites();
 });
 
 async function loadUserData() {
@@ -56,6 +55,18 @@ async function loadUserData() {
         .toUpperCase()
         .slice(0, 2);
       document.getElementById("user-initials").innerText = initials;
+
+      // Carregar Favoritos do Firestore se existirem
+      if (data.favorites) {
+        localStorage.setItem(
+          "vivaLeveFavorites",
+          JSON.stringify(data.favorites),
+        );
+        renderFavoritesFromList(data.favorites);
+      } else {
+        loadFavorites(); // Fallback para local
+      }
+
       card.classList.remove("skeleton");
     }
   } catch (error) {
@@ -119,7 +130,11 @@ saveBtn.addEventListener("click", async () => {
 function loadFavorites() {
   const grid = document.getElementById("favorites-grid");
   const favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
+  renderFavoritesFromList(favorites);
+}
 
+function renderFavoritesFromList(favorites) {
+  const grid = document.getElementById("favorites-grid");
   if (favorites.length === 0) {
     grid.innerHTML = `<p class="empty-drawer-msg">Ainda não tens favoritos.</p>`;
     return;
@@ -131,18 +146,23 @@ function loadFavorites() {
         <div class="fav-item">
             <img src="${book.imagem}" alt="${book.titulo}">
             <h3>${book.titulo}</h3>
-            <button class="btn-remove-fav" onclick="removeFavorite(${book.id})">Remover</button>
+            <button class="btn-remove-fav" onclick="removeFavorite('${book.id}')">Remover</button>
         </div>
     `,
     )
     .join("");
 }
 
-window.removeFavorite = (id) => {
+window.removeFavorite = async (id) => {
   let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
   favorites = favorites.filter((f) => f.id !== id);
   localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
-  loadFavorites();
+
+  if (currentUser) {
+    const userRef = doc(db, "users", currentUser.uid);
+    await updateDoc(userRef, { favorites: favorites });
+  }
+  renderFavoritesFromList(favorites);
 };
 
 // --- Logout ---

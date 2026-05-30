@@ -16,33 +16,6 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
   </head>
   <body>
-    <!-- Firebase Integration -->
-    <script type="module">
-      // Import the functions you need from the SDKs you need
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-analytics.js";
-
-      // Your web app's Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyD8E4ENQtP0xu_qZHe8G5TjqGPsrybkLOg",
-        authDomain: "vivaleve258.firebaseapp.com",
-        projectId: "vivaleve258",
-        storageBucket: "vivaleve258.firebasestorage.app",
-        messagingSenderId: "39491335561",
-        appId: "1:39491335561:web:43c0980cf3720ebaf49d58",
-        measurementId: "G-X7T8582S06",
-      };
-
-      // Initialize Firebase
-      const app = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(app);
-      if (app) {
-        console.log("Firebase initialized successfully");
-      } else {
-        console.error("Failed to initialize Firebase");
-      }
-    </script>
-
     <header class="main-header">
       <!-- Bloco Esquerdo: Logo e Navegação -->
       <div class="header-left">
@@ -209,7 +182,10 @@
             >
           </li>
           <li>
-            <a href="frontend/pages/admin.html" class="footer-link footer-admin-link">
+            <a
+              href="frontend/pages/admin.html"
+              class="footer-link footer-admin-link"
+            >
               Administrador
             </a>
           </li>
@@ -264,7 +240,11 @@
     <canvas id="confetti-canvas"></canvas>
 
     <!-- Botão de Acesso Administrativo (Discreto) -->
-    <a href="frontend/pages/admin.html" class="floating-admin-btn" title="Painel Administrativo">
+    <a
+      href="frontend/pages/admin.html"
+      class="floating-admin-btn"
+      title="Painel Administrativo"
+    >
       <i class="ph ph-gear-six"></i>
     </a>
 

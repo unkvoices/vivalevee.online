@@ -1,16 +1,21 @@
 /**
  * Viva Leve - Lógica Principal (Catálogo, Filtros e Newsletter)
  */
-import { db, analytics } from "./firebase-config.js";
+import { auth, db, analytics } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   collection,
   getDocs,
   query,
   orderBy,
+  doc,
+  getDoc,
+  updateDoc,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 let allBooks = [];
 let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
+let currentUser = null;
 
 const categoryMap = {
   alimentacao: "Alimentação Saudável",
@@ -27,6 +32,21 @@ const mobileFilter = document.getElementById("mobile-category-filter");
 const searchInput = document.getElementById("search-input");
 const searchBtn = document.getElementById("search-btn");
 
+// Listener de Autenticação
+onAuthStateChanged(auth, async (user) => {
+  currentUser = user;
+  if (user) {
+    const userRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(userRef);
+    if (docSnap.exists() && docSnap.data().favorites) {
+      favorites = docSnap.data().favorites;
+      localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+      updateFavoritesUI();
+      renderBooks(allBooks);
+    }
+  }
+});
+
 /**
  * Inicializa a aplicação, carregando os dados do JSON e tratando skeletons
  */
@@ -39,6 +59,11 @@ async function init() {
     const querySnapshot = await getDocs(q);
 
     allBooks = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+    if (allBooks.length === 0) {
+      booksGrid.innerHTML = `<p class="empty-msg">O catálogo está vazio. Adicione livros pelo painel de administrador.</p>`;
+      return;
+    }
 
     // Simulando um pequeno delay para que o skeleton seja visível (opcional)
     setTimeout(() => {
@@ -111,7 +136,7 @@ function renderBooks(books) {
                 <h3 class="book-title">${book.titulo}</h3>
                 <span class="book-price">${book.preco === 0 ? "Grátis" : book.preco.toFixed(2) + " MT"}</span>
             </div>
-            <button class="btn-favorite ${isFav ? "active" : ""}" onclick="addToFavorites(event, ${book.id})" aria-label="Adicionar aos favoritos">
+            <button class="btn-favorite ${isFav ? "active" : ""}" onclick="addToFavorites(event, '${book.id}')" aria-label="Adicionar aos favoritos">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heart-icon">
                 <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
               </svg>
@@ -127,7 +152,7 @@ function renderBooks(books) {
  * @param {Event} event
  * @param {number} id
  */
-window.addToFavorites = (event, id) => {
+window.addToFavorites = async (event, id) => {
   // Impede que o clique no botão de favorito dispare o clique do card (redirecionamento)
   event.stopPropagation();
 
@@ -148,6 +173,12 @@ window.addToFavorites = (event, id) => {
   }
 
   localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+
+  if (currentUser) {
+    const userRef = doc(db, "users", currentUser.uid);
+    await updateDoc(userRef, { favorites: favorites });
+  }
+
   updateFavoritesUI();
 };
 
@@ -201,7 +232,7 @@ function renderFavoritesDrawer() {
           <span class="drawer-item-author">${book.autor}</span>
         </div>
       </div>
-      <button class="btn-remove-fav" onclick="removeFromDrawer(${book.id})">Remover</button>
+      <button class="btn-remove-fav" onclick="removeFromDrawer('${book.id}')">Remover</button>
     </div>
   `,
       )

@@ -7,6 +7,8 @@ import {
 import {
   collection,
   addDoc,
+  doc,
+  getDoc,
   serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import {
@@ -17,11 +19,27 @@ import {
 
 const loginSection = document.getElementById("login-section");
 const adminSection = document.getElementById("admin-section");
+const loginMsg = document.getElementById("login-msg");
 
 // --- Auth State ---
-onAuthStateChanged(auth, (user) => {
-  loginSection.style.display = user ? "none" : "block";
-  adminSection.style.display = user ? "block" : "none";
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists() && userSnap.data().role === "admin") {
+      loginSection.style.display = "none";
+      adminSection.style.display = "block";
+    } else {
+      // Utilizador logado mas não é admin
+      await signOut(auth);
+      loginMsg.innerText = "Acesso restrito apenas a administradores.";
+      loginMsg.style.display = "block";
+    }
+  } else {
+    loginSection.style.display = "block";
+    adminSection.style.display = "none";
+  }
 });
 
 // --- Login ---

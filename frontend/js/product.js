@@ -2,16 +2,43 @@
  * Viva Leve - Product Details Logic
  * Renderiza dinamicamente as informações do livro baseado no ID da URL.
  */
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+  limit,
+  updateDoc,
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Elementos do DOM e Estado Inicial
   const container = document.getElementById("product-details-container");
   const params = new URLSearchParams(window.location.search);
-  const bookId = parseInt(params.get("id")); // Recupera o ID da URL (?id=X)
+  const bookId = params.get("id"); // Recupera o ID (String)
+  let currentUser = null;
 
   // Recuperar favoritos do LocalStorage para consistência
   let favorites = JSON.parse(localStorage.getItem("vivaLeveFavorites")) || [];
   updateFavoritesCount();
+
+  // Listener de Autenticação
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (user) {
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
+      if (docSnap.exists() && docSnap.data().favorites) {
+        favorites = docSnap.data().favorites;
+        localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+        updateFavoritesCount();
+      }
+    }
+  });
 
   /**
    * Atualiza o contador de favoritos no cabeçalho
@@ -112,20 +139,22 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       renderProductSkeleton();
       renderRelatedSkeletons();
-      // Requisição dos dados do catálogo
-      const response = await fetch("../json/livros.json");
-      const books = await response.json();
-      const book = books.find((b) => b.id === bookId);
 
-      if (!book) {
+      // Busca do Firestore
+      const bookRef = doc(db, "books", bookId);
+      const bookSnap = await getDoc(bookRef);
+
+      if (!bookSnap.exists()) {
         renderError("O livro solicitado não existe no nosso catálogo.");
         return;
       }
 
+      const book = { id: bookSnap.id, ...bookSnap.data() };
+
       // Simulação de delay para visualização do skeleton
       setTimeout(() => {
         renderProduct(book);
-        renderRelatedBooks(book, books);
+        loadRelatedBooks(book);
       }, 600);
     } catch (error) {
       console.error("Erro ao carregar detalhes:", error);
@@ -357,18 +386,23 @@ document.addEventListener("DOMContentLoaded", () => {
             <span class="drawer-item-author">${book.autor}</span>
           </div>
         </div>
-        <button class="btn-remove-fav" onclick="removeFromDrawer(${book.id})">Remover</button>
+        <button class="btn-remove-fav" onclick="removeFromDrawer('${book.id}')">Remover</button>
       </div>
     `,
         )
         .join("");
   }
 
-  window.removeFromDrawer = (id) => {
+  window.removeFromDrawer = async (id) => {
     favorites = favorites.filter((fav) => fav.id !== id);
     localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
     updateFavoritesCount();
     renderFavoritesDrawer();
+
+    if (currentUser) {
+      const userRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userRef, { favorites: favorites });
+    }
 
     // Se o livro removido for o que estamos a visualizar, atualiza o botão da página
     if (bookId === id) {
@@ -393,16 +427,20 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * Renderiza livros da mesma categoria (Relacionados)
    */
-  function renderRelatedBooks(currentBook, allBooks) {
+  async function loadRelatedBooks(currentBook) {
     const relatedGrid = document.getElementById("related-books-grid");
     if (!relatedGrid) return;
 
-    const related = allBooks
-      .filter(
-        (b) =>
-          b.categoriaTag === currentBook.categoriaTag &&
-          b.id !== currentBook.id,
-      )
+    const q = query(
+      collection(db, "books"),
+      where("categoriaTag", "==", currentBook.categoriaTag),
+      limit(5),
+    );
+
+    const querySnapshot = await getDocs(q);
+    const related = querySnapshot.docs
+      .map((doc) => ({ id: doc.id, ...doc.data() }))
+      .filter((b) => b.id !== currentBook.id)
       .slice(0, 4);
 
     if (related.length === 0) {
@@ -519,7 +557,7 @@ document.addEventListener("DOMContentLoaded", () => {
    * @param {Event} event
    * @param {Object} book
    */
-  function toggleFavorite(event, book) {
+  async function toggleFavorite(event, book) {
     const btn = event.currentTarget;
     const index = favorites.findIndex((fav) => fav.id === book.id);
 
@@ -536,6 +574,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     localStorage.setItem("vivaLeveFavorites", JSON.stringify(favorites));
+
+    if (currentUser) {
+      const userRef = doc(db, "users", currentUser.uid);
+      await updateDoc(userRef, { favorites: favorites });
+    }
     updateFavoritesCount();
   }
 
